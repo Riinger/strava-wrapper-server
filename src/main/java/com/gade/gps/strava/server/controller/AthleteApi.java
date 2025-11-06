@@ -170,9 +170,9 @@ public interface AthleteApi {
         sa.setElapsedTime(721);
         sa.setSportType(SportType.BADMINTON);
         
-        return List.of(sa);
+//        return List.of(sa);
         
-//        throw new IllegalArgumentException("Not implemented");
+        throw new IllegalArgumentException("Not implemented");
 
     }
 

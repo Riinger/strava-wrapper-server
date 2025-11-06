@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.gade.gps.strava.server.model.ErrorResponse;
-
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
@@ -25,6 +23,10 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
 	}
 
 	private static Object createError(String msg) {
-		return new ErrorResponse(msg);
+		var err = new com.gade.gps.strava.server.model.Error();
+		err.setCode("27");
+		err.setField("Unknown");
+		err.setResource("/athlete/activities");
+		return err;
 	}
 }
