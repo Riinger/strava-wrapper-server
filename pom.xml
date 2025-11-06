@@ -32,11 +32,11 @@
         <springdoc.version>1.6.14</springdoc.version>
         <swagger-ui.version>5.3.1</swagger-ui.version>
         
-<!--		<generated-server-directory>${project.build.directory}/generated-sources/server</generated-server-directory>
-		<generated-server-package>com.gade.gps.strava.generated.server</generated-server-package>
+		<generated-server-directory>${project.build.directory}/generated-sources/server</generated-server-directory>
+		<generated-server-package>com.gade.gps.strava.server</generated-server-package>
 		<generated-client-directory>${project.build.directory}/generated-sources/client</generated-client-directory>
-		<generated-client-package>com.gade.gps.strava.generated.client</generated-client-package>
--->
+		<generated-client-package>com.gade.gps.strava.client</generated-client-package>
+
     </properties>
     
     <dependencies>
@@ -199,7 +199,7 @@
                 </configuration>
             </plugin>
 
-            <plugin>
+<!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
@@ -212,6 +212,8 @@
                         <configuration>
                             <sources>
                                 <source>src/main/java</source>
+                                <source>${generated-client-directory}/src/main/java</source>
+                                <source>${generated-server-directory}/src/main/java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -223,12 +225,12 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>src/test/java</source>
+                                <source>${project.build.directory}/generated-sources/src/test/java</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -331,11 +333,11 @@
 	<profiles>
 		<profile>
 			<id>generate-client</id>
-			<properties>
+<!--			<properties>
 				<generated-client-directory>${project.build.directory}/generated-sources/client</generated-client-directory>
 				<generated-client-package>com.gade.gps.strava.generated.client</generated-client-package>
 		    </properties>
-
+-->
 			<build>
 				<plugins>
 					<plugin>
@@ -356,15 +358,17 @@
 									<inputSpec>src/main/resources/schema/gade-strava-swagger-client.json</inputSpec>
 									<generatorName>java</generatorName>
 									<output>${generated-client-directory}</output>
-									<generateApis>false</generateApis>
+									<generateApis>true</generateApis>
 
 									<configOptions>
 										<hideGenerationTimestamp>true</hideGenerationTimestamp>
 										<library>apache-httpclient</library>
+
+										<useJakartaEe>true</useJakartaEe>
+
 										<apiPackage>${generated-client-package}.api</apiPackage>
 										<modelPackage>${generated-client-package}.model</modelPackage>
-										<invokerPackage>
-											${generated-client-package}</invokerPackage>
+										<invokerPackage>${generated-client-package}</invokerPackage>
 									</configOptions>
 								</configuration>
 							</execution>
@@ -375,11 +379,11 @@
 		</profile>		
 		<profile>
 			<id>generate-server</id>
-			<properties>
+<!--			<properties>
 				<generated-server-directory>${project.build.directory}/generated-sources/server</generated-server-directory>
 				<generated-server-package>com.gade.gps.strava.generated.server</generated-server-package>
 		    </properties>
-
+-->
 			<build>
 				<plugins>
 					<plugin>
@@ -401,7 +405,7 @@
 									<generatorName>spring</generatorName>
 									<output>${generated-server-directory}</output>
 									
-									<apisToGenerate>activities</apisToGenerate>
+									<apisToGenerate>athlete</apisToGenerate>
 		
 		<!--							<generateApiTests>true</generateApiTests>
 									<generateModelTests>false</generateModelTests>
@@ -410,8 +414,13 @@
 									<configOptions>
 										<hideGenerationTimestamp>true</hideGenerationTimestamp>
 										<library>spring-boot</library>
+
 										<useJakartaEe>true</useJakartaEe>
-										<apiPackage>${generated-server-package}.api</apiPackage>
+										<useSpringController>true</useSpringController>
+										<useResponseEntity>false</useResponseEntity>
+										<requestMappingMode>controller</requestMappingMode>
+
+										<apiPackage>${generated-server-package}.controller</apiPackage>
 										<configPackage>${generated-server-package}.config</configPackage>
 										<modelPackage>${generated-server-package}.model</modelPackage>
 										<invokerPackage>${generated-server-package}</invokerPackage>
@@ -423,6 +432,60 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>generate-server-swagger</id>
+			<properties>
+				<generated-server-directory>${project.build.directory}/generated-sources/swagger/server</generated-server-directory>
+				<generated-server-package>com.gade.gps.strava.swagger.generated.server</generated-server-package>
+		    </properties>
+			<build>
+				<plugins>
+					<plugin>
+		                <groupId>io.swagger</groupId>
+		                <artifactId>swagger-codegen-maven-plugin</artifactId>
+		                <version>2.4.23</version>
+						<executions>				
+							<execution>
+								<id>generate-strava-server</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<groupId>com.gade.gps</groupId>
+									<artifactId>gade-strava-server</artifactId>
+									<artifactVersion>0.0.1-SNAPSHOT</artifactVersion>
+		
+									<inputSpec>src/main/resources/schema/gade-strava-swagger-client.json</inputSpec>
+									<language>spring</language>
+									<output>${generated-server-directory}</output>
+									
+									<apisToGenerate>athlete</apisToGenerate>
+		
+		<!--							<generateApiTests>true</generateApiTests>
+									<generateModelTests>false</generateModelTests>
+									<generateApiDocumentation>true</generateApiDocumentation>
+									<generateModelDocumentation>false</generateModelDocumentation>-->
+									<configOptions>
+										<hideGenerationTimestamp>true</hideGenerationTimestamp>
+										<library>spring-boot</library>
+
+										<useJakartaEe>true</useJakartaEe>
+										<useSpringController>true</useSpringController>
+										<useResponseEntity>false</useResponseEntity>
+
+										<apiPackage>${generated-server-package}.controller</apiPackage>
+										<configPackage>${generated-server-package}.config</configPackage>
+										<modelPackage>${generated-server-package}.model</modelPackage>
+										<invokerPackage>${generated-server-package}</invokerPackage>
+									</configOptions>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+<!--		
 		<profile>
 			<id>generate-single-folder</id>
 		    <activation>
@@ -444,6 +507,6 @@
 				<generated-client-package>com.gade.gps.strava.generated.client</generated-client-package>
 		    </properties>
 		</profile>
-	</profiles>
 -->
+	</profiles>
 </project>
