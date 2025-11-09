@@ -10,5 +10,5 @@ import com.gade.gps.strava.client.model.SummaryActivity;
 
 public interface StravaRepository {
 
-	public ResponseEntity<List<SummaryActivity>> getLoggedInAthleteActivities(int before, int after, int page, int pageSize) throws RestClientException, IOException;
+	public ResponseEntity<List<SummaryActivity>> getLoggedInAthleteActivities(Integer before, Integer after, Integer page, Integer pageSize) throws RestClientException, IOException;
 }

@@ -1,8 +1,6 @@
 package com.gade.gps.strava.controller;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gade.gps.strava.client.model.SportType;
 import com.gade.gps.strava.client.model.SummaryActivity;
 import com.gade.gps.strava.service.AthleteService;
 
@@ -30,18 +27,6 @@ import jakarta.validation.Valid;
 public class AthleteApiController { //implements AthleteApi {
 	
 	@Autowired AthleteService service;
-
-//    private final NativeWebRequest request;
-//
-//    @Autowired
-//    public AthleteApiController(NativeWebRequest request) {
-//        this.request = request;
-//    }
-//
-//    @Override
-//    public Optional<NativeWebRequest> getRequest() {
-//        return Optional.ofNullable(request);
-//    }
 	
     @GetMapping(
             value = "/athlete/activities",
@@ -57,24 +42,9 @@ public class AthleteApiController { //implements AthleteApi {
             
             @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "30") Integer perPage
         ) {
-//            getRequest().ifPresent(request -> {
-//            	var t = getRequest();
-//                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-//                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-//                        String exampleString = "[ { \"comment_count\" : 7, \"average_cadence\" : 8.762042, \"upload_id\" : 6, \"private\" : true, \"distance\" : 1.4658129, \"timezone\" : \"timezone\", \"has_kudoed\" : true, \"external_id\" : \"external_id\", \"device_watts\" : true, \"type\" : \"AlpineSki\", \"manual\" : true, \"gear_id\" : \"gear_id\", \"average_heartrate\" : 6.6835623, \"elev_low\" : 9.301444, \"device_name\" : \"device_name\", \"flagged\" : true, \"trainer\" : true, \"hide_from_home\" : true, \"total_photo_count\" : 1, \"workout_type\" : 6, \"upload_id_str\" : \"upload_id_str\", \"elapsed_time\" : 5, \"id\" : 0, \"kudos_count\" : 4, \"map\" : { \"summary_polyline\" : \"summary_polyline\", \"id\" : \"id\", \"polyline\" : \"polyline\" }, \"average_speed\" : 7.4577446, \"moving_time\" : 5, \"sport_type\" : \"AlpineSki\", \"start_date\" : \"2000-01-23T04:56:07.000+00:00\", \"kilojoules\" : 4.9652185, \"athlete\" : { \"id\" : 1 }, \"athlete_count\" : 1, \"start_date_local\" : \"2000-01-23T04:56:07.000+00:00\", \"max_speed\" : 1.1730742, \"total_elevation_gain\" : 2.302136, \"average_watts\" : 5.025005, \"start_latlng\" : [ 3.6160767, 3.6160767 ], \"elev_high\" : 7.0614014, \"photo_count\" : 1, \"achievement_count\" : 2, \"max_watts\" : 9, \"name\" : \"name\", \"weighted_average_watts\" : 9, \"commute\" : true }, { \"comment_count\" : 7, \"average_cadence\" : 8.762042, \"upload_id\" : 6, \"private\" : true, \"distance\" : 1.4658129, \"timezone\" : \"timezone\", \"has_kudoed\" : true, \"external_id\" : \"external_id\", \"device_watts\" : true, \"type\" : \"AlpineSki\", \"manual\" : true, \"gear_id\" : \"gear_id\", \"average_heartrate\" : 6.6835623, \"elev_low\" : 9.301444, \"device_name\" : \"device_name\", \"flagged\" : true, \"trainer\" : true, \"hide_from_home\" : true, \"total_photo_count\" : 1, \"workout_type\" : 6, \"upload_id_str\" : \"upload_id_str\", \"elapsed_time\" : 5, \"id\" : 0, \"kudos_count\" : 4, \"map\" : { \"summary_polyline\" : \"summary_polyline\", \"id\" : \"id\", \"polyline\" : \"polyline\" }, \"average_speed\" : 7.4577446, \"moving_time\" : 5, \"sport_type\" : \"AlpineSki\", \"start_date\" : \"2000-01-23T04:56:07.000+00:00\", \"kilojoules\" : 4.9652185, \"athlete\" : { \"id\" : 1 }, \"athlete_count\" : 1, \"start_date_local\" : \"2000-01-23T04:56:07.000+00:00\", \"max_speed\" : 1.1730742, \"total_elevation_gain\" : 2.302136, \"average_watts\" : 5.025005, \"start_latlng\" : [ 3.6160767, 3.6160767 ], \"elev_high\" : 7.0614014, \"photo_count\" : 1, \"achievement_count\" : 2, \"max_watts\" : 9, \"name\" : \"name\", \"weighted_average_watts\" : 9, \"commute\" : true } ]";
-//                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-//                        break;
-//                    }
-//                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-//                        String exampleString = "{ \"message\" : \"message\", \"errors\" : [ { \"code\" : \"code\", \"field\" : \"field\", \"resource\" : \"resource\" }, { \"code\" : \"code\", \"field\" : \"field\", \"resource\" : \"resource\" } ] }";
-//                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-//                        break;
-//                    }
-//                }
-//            });
     	
     		try {
-				return service.getActivities();
+				return service.getActivities(before, after, page, perPage);
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
