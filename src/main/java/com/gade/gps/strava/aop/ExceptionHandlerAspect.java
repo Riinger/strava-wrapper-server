@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gade.gps.strava.server.model.Fault;
+import com.gade.gps.strava.client.model.Fault;
 
 import lombok.extern.slf4j.Slf4j;
 

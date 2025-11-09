@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gade.gps.strava.repository.StravaRepository;
-import com.gade.gps.strava.server.model.SummaryActivity;
 
 import lombok.extern.slf4j.Slf4j;
 

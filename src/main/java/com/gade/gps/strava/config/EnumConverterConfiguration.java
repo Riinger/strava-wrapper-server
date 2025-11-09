@@ -1,11 +1,12 @@
 package com.gade.gps.strava.config;
 
-import com.gade.gps.strava.server.model.ActivityType;
-import com.gade.gps.strava.server.model.SportType;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+
+import com.gade.gps.strava.client.model.ActivityType;
+import com.gade.gps.strava.client.model.SportType;
 
 /**
  * This class provides Spring Converter beans for the enum models in the OpenAPI specification.
