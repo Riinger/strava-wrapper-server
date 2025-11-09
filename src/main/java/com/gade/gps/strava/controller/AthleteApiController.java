@@ -1,9 +1,11 @@
 package com.gade.gps.strava.controller;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gade.gps.strava.client.model.SportType;
 import com.gade.gps.strava.client.model.SummaryActivity;
+import com.gade.gps.strava.service.AthleteService;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -25,6 +28,8 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("${openapi.stravaAPIV3.base-path:/api/v3}")
 public class AthleteApiController { //implements AthleteApi {
+	
+	@Autowired AthleteService service;
 
 //    private final NativeWebRequest request;
 //
@@ -67,21 +72,17 @@ public class AthleteApiController { //implements AthleteApi {
 //                    }
 //                }
 //            });
-            var sa = new SummaryActivity();
-            sa.setDistance((float) 12.345);
-            sa.setStartDate(OffsetDateTime.of(2024, 1, 21, 12, 34, 56, 789, ZoneOffset.ofHours(0)));
-            sa.setName("Dummy activity");
-            sa.setDeviceName("My device");
-            sa.setElapsedTime(721);
-            sa.setSportType(SportType.BADMINTON);
-            
-            if ( 1 == 1 ) {
-            return List.of(sa);
-            } else {
-            
-            throw new IllegalArgumentException("Not implemented");
-            }
-
+    	
+    		try {
+				return service.getActivities();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		throw new IllegalArgumentException("Not implemented");
         }
 
 
