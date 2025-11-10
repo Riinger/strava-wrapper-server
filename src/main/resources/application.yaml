@@ -1,3 +1,9 @@
 spring:
   application:
     name: strava-wrapper
+
+server:
+  servlet:
+    context-path: /api/v3
+
+

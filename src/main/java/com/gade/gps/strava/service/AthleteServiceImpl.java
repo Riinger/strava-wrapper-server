@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AthleteServiceImpl implements AthleteService {
     @Autowired StravaRepository stravaRepository;
 
-    public List<SummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) throws IOException, ClassNotFoundException {	  
+    public List<SummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) throws IOException {	  
 		var response = stravaRepository.getLoggedInAthleteActivities(before, after, page, pageSize);
 		if ( response.getStatusCode() == HttpStatus.OK ) {
 			return response.getBody();

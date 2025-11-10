@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,14 +25,14 @@ import jakarta.validation.Valid;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.16.0")
 @RestController
-@RequestMapping("${openapi.stravaAPIV3.base-path:/api/v3}")
+//@RequestMapping("${openapi.stravaAPIV3.base-path:/api/v3}")
 public class AthleteApiController { //implements AthleteApi {
 	
 	@Autowired AthleteService service;
 	
     @GetMapping(
             value = "/athlete/activities",
-            produces = { "application/json" }
+            produces = { MediaType.APPLICATION_JSON_VALUE }
         )
         @ResponseStatus(HttpStatus.OK)
         
@@ -40,14 +42,12 @@ public class AthleteApiController { //implements AthleteApi {
             @Parameter(name = "after", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer after,
             @Parameter(name = "page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer page,
             
-            @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "30") Integer perPage
+            @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "30") Integer perPage,
+            @RequestHeader final HttpHeaders headers
         ) {
     	
     		try {
 				return service.getActivities(before, after, page, perPage);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
