@@ -6,6 +6,9 @@ server:
   servlet:
     context-path: /api/v3
 
+logging:
+  config: classpath:config/logback.xml
+
 strava:
 #  config: file:///d:/workspace-sts/config/config.yml
   cache:
