@@ -31,29 +31,41 @@ public class AthleteApiController { //implements AthleteApi {
 	@Autowired AthleteService service;
 	
     @GetMapping(
-            value = "/athlete/activities",
-            produces = { MediaType.APPLICATION_JSON_VALUE }
-        )
-        @ResponseStatus(HttpStatus.OK)
+        value = "/athlete/activities",
+        produces = { MediaType.APPLICATION_JSON_VALUE }
+    )
+    @ResponseStatus(HttpStatus.OK)
+    
+    public List<SummaryActivity> getLoggedInAthleteActivities(
+    		HttpServletRequest request,
+        @Parameter(name = "before", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer before,
+        @Parameter(name = "after", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer after,
+        @Parameter(name = "page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer page,
         
-        public List<SummaryActivity> getLoggedInAthleteActivities(
-        		HttpServletRequest request,
-            @Parameter(name = "before", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer before,
-            @Parameter(name = "after", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer after,
-            @Parameter(name = "page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer page,
-            
-            @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "30") Integer perPage,
-            @RequestHeader final HttpHeaders headers
-        ) {
-    	
-    		try {
-				return service.getActivities(before, after, page, perPage);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    		throw new IllegalArgumentException("Not implemented");
-        }
+        @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "30") Integer perPage
+    ) {
+	
+		try {
+			return service.getActivities(before, after, page, perPage);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		throw new IllegalArgumentException("Not implemented");
+    }
 
-
+    @GetMapping(
+        value = "/athlete/activities/all",
+        produces = { MediaType.APPLICATION_JSON_VALUE }
+    )
+    @ResponseStatus(HttpStatus.OK)
+    public List<SummaryActivity> getActivities(HttpServletRequest request) {
+		try {
+			return service.getActivities();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		throw new IllegalArgumentException("Not implemented");
+    }
 }

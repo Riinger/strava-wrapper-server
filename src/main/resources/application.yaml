@@ -6,4 +6,7 @@ server:
   servlet:
     context-path: /api/v3
 
-
+strava:
+#  config: file:///d:/workspace-sts/config/config.yml
+  cache:
+    path: c:\\tmp\\cache\\strava-cache-2025.ser

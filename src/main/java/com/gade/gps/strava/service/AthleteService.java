@@ -7,4 +7,5 @@ import com.gade.gps.strava.client.model.SummaryActivity;
 
 public interface AthleteService {
     public List<SummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) throws IOException;
+    public List<SummaryActivity> getActivities() throws IOException;
 }

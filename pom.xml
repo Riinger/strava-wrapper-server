@@ -294,10 +294,46 @@
                     </execution>
                 </executions>
            </plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.16.0</version>
+				<executions>
+					<execution>
+						<id>generate-strava-client</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<groupId>com.gade.gps</groupId>
+							<artifactId>gade-strava-client</artifactId>
+							<artifactVersion>0.0.1-SNAPSHOT</artifactVersion>
+
+							<inputSpec>src/main/resources/schema/gade-strava-swagger-client.json</inputSpec>
+							<generatorName>java</generatorName>
+							<output>${generated-client-directory}</output>
+							<generateApis>true</generateApis>
+
+							<configOptions>
+								<serializableModel>true</serializableModel>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<library>apache-httpclient</library>
+
+								<useJakartaEe>true</useJakartaEe>
+
+								<apiPackage>${generated-client-package}.api</apiPackage>
+								<modelPackage>${generated-client-package}.model</modelPackage>
+								<invokerPackage>${generated-client-package}</invokerPackage>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>			
+           
 		</plugins>
 	</build>
 	
-	<profiles>
+<!--	<profiles>
 		<profile>
 			<id>generate-client</id>
 			<build>
@@ -323,6 +359,7 @@
 									<generateApis>true</generateApis>
 
 									<configOptions>
+										<serializableModel>true</serializableModel>
 										<hideGenerationTimestamp>true</hideGenerationTimestamp>
 										<library>apache-httpclient</library>
 
@@ -340,4 +377,4 @@
 			</build>
 		</profile>
 	</profiles>
-</project>
+--></project>

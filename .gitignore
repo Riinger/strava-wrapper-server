@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/resoueces/config/dell/*
+src/main/resources/config/
