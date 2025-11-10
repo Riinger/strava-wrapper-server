@@ -273,13 +273,19 @@
                                 <rule>
                                     <element>PACKAGE</element>
 		                            <excludes>
-		                            	<exclude>**.model</exclude>
+		                            	<exclude>**.client,model</exclude>
+		                            	<exclude>**.client.auth</exclude>
 		                            </excludes>
                                     <limits>
                                         <limit>
+                                            <counter>CLASS</counter>
+                                            <value>MISSEDRATIO</value>
+                                            <maximum>0</maximum>
+                                        </limit>
+                                        <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.40</minimum>
+                                            <minimum>80%</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
