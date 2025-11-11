@@ -4,11 +4,12 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.gade.gps.strava.client.model.SummaryActivity;
 
 public class TestHelper {
-	public static SummaryActivity createSummary(float distance, OffsetDateTime startTime, Integer elapsedTime, Long id) {
+	public static SummaryActivity createSummaryActivity(float distance, OffsetDateTime startTime, Integer elapsedTime, Long id) {
 		var sa = new SummaryActivity();
 		sa.setDistance(distance);
 		sa.setStartDate(startTime);
@@ -16,7 +17,7 @@ public class TestHelper {
 		sa.setId(id);
 		return sa;
 	}
-	public static List<SummaryActivity> createSummaryList(int count) {
+	public static List<SummaryActivity> createRandomSummaryActivityList(int count) {
 		List<SummaryActivity> summaryList = new ArrayList<>();
 		for ( var i = 0 ; i < count ; i++ ) {
 			summaryList.add(createRandoSummaryActivity());
@@ -37,6 +38,6 @@ public class TestHelper {
 		return OffsetDateTime.of(randomInt(2022, 2025), randomInt(1, 12), randomInt(1, 28), randomInt(0, 23), randomInt(0, 59), randomInt(0, 59), randomInt(0, 999), ZoneOffset.ofHours(0));
 	}
 	private static int randomInt(int min, int max) {
-		return min + (int)(Math.random() * (max - min));
+		return new Random().nextInt(min, max);
 	}
 }

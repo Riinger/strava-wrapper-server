@@ -3,7 +3,6 @@ package com.gade.gps.strava.repository;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClientException;
@@ -18,7 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Repository
 @Slf4j
 public class StravaRepositoryImpl implements StravaRepository {
-	@Autowired OauthHelper helper;
+	final OauthHelper helper;
+
+    StravaRepositoryImpl(OauthHelper helper) {
+        this.helper = helper;
+    }
 
 	@Override
 	public ResponseEntity<List<SummaryActivity>> getLoggedInAthleteActivities(Integer before, Integer after, Integer page, Integer pageSize) throws RestClientException, IOException {

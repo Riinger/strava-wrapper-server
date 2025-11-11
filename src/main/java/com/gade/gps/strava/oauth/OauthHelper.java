@@ -9,13 +9,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,24 +34,20 @@ public class OauthHelper {
 	private static final String PARAM_GRANT_TYPE = "grant_type";
 	private static final String PARAM_REFRESH_TOKEN = "refresh_token";
 	
-	@Autowired StravaProperties stravaProperties;
-	
-	@Autowired StravaToken token;
+	final StravaProperties stravaProperties;
+	final StravaToken token;
+
+    OauthHelper(StravaProperties stravaProperties, StravaToken token) {
+        this.stravaProperties = stravaProperties;
+        this.token = token;
+    }
 	
 	public ApiClient getApiClient() throws IOException {
 		ApiClient defaultClient = Configuration.getDefaultApiClient();
 		// Configure OAuth2 access token for authorization: strava_oauth
-		OAuth strava_oauth = (OAuth) defaultClient.getAuthentication("strava_oauth");
-		strava_oauth.setAccessToken(getAccessToken());
+		var stravaOauth = (OAuth) defaultClient.getAuthentication("strava_oauth");
+		stravaOauth.setAccessToken(getAccessToken());
 		return defaultClient;
-		
-//		RestTemplate t = new RestTemplate();
-//		t.setRequestFactory(new BufferingClientHttpRequestFactory(t.getRequestFactory()));
-//		ApiClient apiClient = new ApiClient(t);
-//		apiClient.setBasePath(stravaProperties.getHostUrl());
-//		OAuth stravaAuth = (OAuth) apiClient.getAuthentication("strava_oauth");
-//		stravaAuth.setAccessToken(getAccessToken());
-//		return apiClient;
 	}
 
 	private String getAccessToken() throws IOException {
@@ -91,16 +85,14 @@ public class OauthHelper {
 			token.rewrite(mapper.readValue(response.getBody(), StravaToken.class));
 			log.debug("New refresh token = {}", token.getRefreshToken());
 			return token.getAccessToken();
-		} else {
-			throw new StravaApplicationRuntimeException("Strava returned non-successful status code " + response.getStatusCode());
 		}
-
+		throw new StravaApplicationRuntimeException("Strava returned non-successful status code " + response.getStatusCode());
 	}
 	
     private static String urlEncodeUTF8(Map<String, String> map) {
     	StringBuilder sb = new StringBuilder();
     	for (Map.Entry<String, String> entry : map.entrySet()) {
-	        if (sb.length() > 0) {
+	        if (!sb.isEmpty()) {
 	            sb.append("&");
 	        }
 	        sb.append(String.format("%s=%s",

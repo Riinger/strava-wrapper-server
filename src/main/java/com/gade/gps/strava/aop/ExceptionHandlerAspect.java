@@ -33,9 +33,9 @@ public class ExceptionHandlerAspect {
 		} catch (HttpStatusCodeException ex) {
 			// Do not always log as error, it may be an acceptable HTTP status code
 			if ( ex.getStatusCode().is5xxServerError() ) {
-				log.error("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replaceAll("\\n", ""));
+				log.error("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replace("\\n", ""));
 			} else {
-				log.debug("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replaceAll("\\n", ""));
+				log.debug("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replace("\\n", ""));
 			}
 			String message = ex.getMessage();
 			if ( ex.getResponseBodyAsString() != null ) {

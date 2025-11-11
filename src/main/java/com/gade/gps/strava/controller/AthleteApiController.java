@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +18,6 @@ import com.gade.gps.strava.service.AthleteService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.annotation.Generated;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.16.0")
@@ -37,7 +34,6 @@ public class AthleteApiController { //implements AthleteApi {
     @ResponseStatus(HttpStatus.OK)
     
     public List<SummaryActivity> getLoggedInAthleteActivities(
-    		HttpServletRequest request,
         @Parameter(name = "before", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer before,
         @Parameter(name = "after", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer after,
         @Parameter(name = "page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer page,
@@ -59,7 +55,7 @@ public class AthleteApiController { //implements AthleteApi {
         produces = { MediaType.APPLICATION_JSON_VALUE }
     )
     @ResponseStatus(HttpStatus.OK)
-    public List<SummaryActivity> getActivities(HttpServletRequest request) {
+    public List<SummaryActivity> getActivities() {
 		try {
 			return service.getActivities();
 		} catch (IOException e) {

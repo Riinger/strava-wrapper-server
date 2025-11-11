@@ -34,13 +34,10 @@ public class StravaCache implements Serializable {
 	{
 		List<SummaryActivity> result = null;
 
-	      try
+	      try (FileInputStream fileIn = new FileInputStream(getCacheFile());
+				ObjectInputStream in = new ObjectInputStream(fileIn))
 	      {
-	         FileInputStream fileIn = new FileInputStream(getCacheFile());
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         result = (List<SummaryActivity>) in.readObject();
-	         in.close();
-	         fileIn.close();
 	         log.info("Data successfully read from cache");
 	      }
 	      catch ( Exception  e )
@@ -69,12 +66,9 @@ public class StravaCache implements Serializable {
 
 	public void update(List<SummaryActivity> body) {
 		String cacheFile = getCacheFile();
-		try {
-			FileOutputStream fileOut = new FileOutputStream(cacheFile);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		try (FileOutputStream fileOut = new FileOutputStream(cacheFile);
+				ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
 			out.writeObject(body);
-			out.close();
-			fileOut.close();
 			log.debug("Serialized data is saved in " + cacheFile);
 		} catch (NotSerializableException nse) {
 			nse.printStackTrace();

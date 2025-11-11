@@ -16,11 +16,6 @@
 
 	<properties>
 		<java.version>21</java.version>
-		<!--
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-		<maven.compiler.release>${java.version}</maven.compiler.release>
-		-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <httpclient-version>5.2.1</httpclient-version>
         <jackson-version>2.19.2</jackson-version>
@@ -40,15 +35,6 @@
 
     </properties>
 
-<!--	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>4.9.8.1</version>
-			</plugin>
-		</plugins>
-	</reporting>-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -87,7 +73,6 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.5.20</version>
 		</dependency>
 
 		<!-- HTTP client: apache client -->
@@ -142,7 +127,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-configuration-processor</artifactId>
+        	<optional>true</optional>
+        </dependency>
+        
     </dependencies>
 
     <build>
@@ -317,7 +308,6 @@
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
-								<!--<hideGenerationTimestamp>true</hideGenerationTimestamp>-->
 								<library>apache-httpclient</library>
 
 								<useJakartaEe>true</useJakartaEe>
@@ -346,12 +336,10 @@
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
-								<!--<hideGenerationTimestamp>true</hideGenerationTimestamp>-->
 								<library>spring-boot</library>
 
 								<useJakartaEe>true</useJakartaEe>
 
-								<!--<apiPackage>${generated-server-package}.api</apiPackage>-->
 								<modelPackage>${generated-server-package}.model</modelPackage>
 								<invokerPackage>${generated-server-package}</invokerPackage>
 								
@@ -365,48 +353,4 @@
 		</plugins>
 	</build>
 	
-<!--	<profiles>
-		<profile>
-			<id>generate-client</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.openapitools</groupId>
-						<artifactId>openapi-generator-maven-plugin</artifactId>
-						<version>7.16.0</version>
-						<executions>
-							<execution>
-								<id>generate-strava-client</id>
-								<goals>
-									<goal>generate</goal>
-								</goals>
-								<configuration>
-									<groupId>com.gade.gps</groupId>
-									<artifactId>gade-strava-client</artifactId>
-									<artifactVersion>0.0.1-SNAPSHOT</artifactVersion>
-
-									<inputSpec>src/main/resources/schema/gade-strava-swagger-client.json</inputSpec>
-									<generatorName>java</generatorName>
-									<output>${generated-client-directory}</output>
-									<generateApis>true</generateApis>
-
-									<configOptions>
-										<serializableModel>true</serializableModel>
-										<hideGenerationTimestamp>true</hideGenerationTimestamp>
-										<library>apache-httpclient</library>
-
-										<useJakartaEe>true</useJakartaEe>
-
-										<apiPackage>${generated-client-package}.api</apiPackage>
-										<modelPackage>${generated-client-package}.model</modelPackage>
-										<invokerPackage>${generated-client-package}</invokerPackage>
-									</configOptions>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>			
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
---></project>
+</project>

@@ -25,7 +25,7 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
 	private static Object createError(String msg) {
 		var err = new com.gade.gps.strava.client.model.Error();
 		err.setCode("27");
-		err.setField("Unknown");
+		err.setField("Unknown, msg = " + msg);
 		err.setResource("/athlete/activities");
 		return err;
 	}

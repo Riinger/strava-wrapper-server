@@ -8,6 +8,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,12 +38,12 @@ class AthleteApiControllerTest {
 	@Test
 	void test() throws Exception {
 		List<SummaryActivity>  mockedResponse = List.of(
-				TestHelper.createSummary((float)1.23, OffsetDateTime.of(2025, 1, 31, 10, 11, 12, 345, ZoneOffset.ofHours(0)), 789, 1001L),
-				TestHelper.createSummary((float)34.1, OffsetDateTime.of(2025, 2, 23, 18, 19, 20, 000, ZoneOffset.ofHours(0)), 1221, 1002L)
+				TestHelper.createSummaryActivity((float)1.23, OffsetDateTime.of(2025, 1, 31, 10, 11, 12, 345, ZoneOffset.ofHours(0)), 789, 1001L),
+				TestHelper.createSummaryActivity((float)34.1, OffsetDateTime.of(2025, 2, 23, 18, 19, 20, 000, ZoneOffset.ofHours(0)), 1221, 1002L)
 				);
 				
-		Mockito.when(service.getActivities(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockedResponse);
+		Mockito.when(service.getActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponse);
 
-		this.mockMvc.perform(get("/athlete/activities").accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+		mockMvc.perform(get("/athlete/activities").accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
 	}
 }
