@@ -6,9 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.client.model.SummaryActivity;
+import com.gade.gps.strava.mappers.SummaryMapper;
 
 public class TestHelper {
+	public static GadeSummaryActivity createGadeSummaryActivity(float distance, OffsetDateTime startTime, Integer elapsedTime, Long id) {
+		return SummaryMapper.mapToGade(createSummaryActivity(distance, startTime, elapsedTime, id));
+	}
+	public static List<GadeSummaryActivity> createRandomGadeSummaryActivityList(int count) {
+		return SummaryMapper.mapToGadeList(createRandomSummaryActivityList(count));
+	}	
+	public static GadeSummaryActivity createRandomGadeSummaryActivity() {
+		return SummaryMapper.mapToGade(createRandomSummaryActivity());
+	}	
 	public static SummaryActivity createSummaryActivity(float distance, OffsetDateTime startTime, Integer elapsedTime, Long id) {
 		var sa = new SummaryActivity();
 		sa.setDistance(distance);
@@ -20,11 +31,11 @@ public class TestHelper {
 	public static List<SummaryActivity> createRandomSummaryActivityList(int count) {
 		List<SummaryActivity> summaryList = new ArrayList<>();
 		for ( var i = 0 ; i < count ; i++ ) {
-			summaryList.add(createRandoSummaryActivity());
+			summaryList.add(createRandomSummaryActivity());
 		}
 		return summaryList;
 	}
-	public static SummaryActivity createRandoSummaryActivity() {
+	public static SummaryActivity createRandomSummaryActivity() {
 		var sa = new SummaryActivity();
 		var avSpeed = 16.5;
 		var elapsedTime = randomInt(600, 3600 * 6);

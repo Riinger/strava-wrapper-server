@@ -17,7 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.gade.gps.strava.client.model.SummaryActivity;
+import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.oauth.StravaToken;
 import com.gade.gps.strava.service.AthleteService;
 import com.gade.gps.strava.utils.TestHelper;
@@ -37,9 +37,9 @@ class AthleteApiControllerTest {
 	
 	@Test
 	void test() throws Exception {
-		List<SummaryActivity>  mockedResponse = List.of(
-				TestHelper.createSummaryActivity((float)1.23, OffsetDateTime.of(2025, 1, 31, 10, 11, 12, 345, ZoneOffset.ofHours(0)), 789, 1001L),
-				TestHelper.createSummaryActivity((float)34.1, OffsetDateTime.of(2025, 2, 23, 18, 19, 20, 000, ZoneOffset.ofHours(0)), 1221, 1002L)
+		List<GadeSummaryActivity>  mockedResponse = List.of(
+				TestHelper.createGadeSummaryActivity((float)1.23, OffsetDateTime.of(2025, 1, 31, 10, 11, 12, 345, ZoneOffset.ofHours(0)), 789, 1001L),
+				TestHelper.createGadeSummaryActivity((float)34.1, OffsetDateTime.of(2025, 2, 23, 18, 19, 20, 000, ZoneOffset.ofHours(0)), 1221, 1002L)
 				);
 				
 		Mockito.when(service.getActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponse);

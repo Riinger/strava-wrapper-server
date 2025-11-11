@@ -43,7 +43,7 @@ class AthleteServiceImplTest {
 		Mockito.when(stravaRepository.getLoggedInAthleteActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponseEntity);
 		Mockito.when(stravaCache.getCachedActivities()).thenReturn(mockedCacheResponse);
 
-		var response = service.getActivities();
+		var response = service.getActivities(null);
 		assertEquals(4, response.size());
 	}
 }
