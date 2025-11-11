@@ -1,0 +1,7 @@
+strava:
+  auth-file: classpath:strava-token.properties
+  host-url: https://www.strava.com/api/v3
+  oauthtoken-uri: /oauth/token
+  client-id: CID
+  client-secret: CSECRET
+  grant-type: refresh_token

@@ -68,7 +68,7 @@ public class AthleteServiceImpl implements AthleteService {
 	    	}
     	}
 		stravaCache.update(activities);
-		return activities.subList(0, 1); // TODO - map to our structure and return correct sublist
+		return activities; // TODO - map to our structure and return correct sublist
 
 	}
 }

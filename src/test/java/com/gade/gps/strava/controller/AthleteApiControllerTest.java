@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.gade.gps.strava.client.model.SummaryActivity;
 import com.gade.gps.strava.oauth.StravaToken;
 import com.gade.gps.strava.service.AthleteService;
+import com.gade.gps.strava.utils.TestHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,22 +37,12 @@ class AthleteApiControllerTest {
 	@Test
 	void test() throws Exception {
 		List<SummaryActivity>  mockedResponse = List.of(
-				createSummary((float)1.23, OffsetDateTime.of(2025, 1, 31, 10, 11, 12, 345, ZoneOffset.ofHours(0)), 789, 1001L),
-				createSummary((float)34.1, OffsetDateTime.of(2025, 2, 23, 18, 19, 20, 000, ZoneOffset.ofHours(0)), 1221, 1002L)
+				TestHelper.createSummary((float)1.23, OffsetDateTime.of(2025, 1, 31, 10, 11, 12, 345, ZoneOffset.ofHours(0)), 789, 1001L),
+				TestHelper.createSummary((float)34.1, OffsetDateTime.of(2025, 2, 23, 18, 19, 20, 000, ZoneOffset.ofHours(0)), 1221, 1002L)
 				);
 				
 		Mockito.when(service.getActivities(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(mockedResponse);
 
 		this.mockMvc.perform(get("/athlete/activities").accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
 	}
-	
-	private SummaryActivity createSummary(float distance, OffsetDateTime startTime, Integer elapsedTime, Long id) {
-		var sa = new SummaryActivity();
-		sa.setDistance(distance);
-		sa.setStartDate(startTime);
-		sa.setElapsedTime(elapsedTime);
-		sa.setId(id);
-		return sa;
-	}
-
 }
