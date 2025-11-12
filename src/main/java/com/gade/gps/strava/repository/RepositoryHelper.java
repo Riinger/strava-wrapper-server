@@ -39,6 +39,7 @@ public class RepositoryHelper {
 	
 	public ApiClient getApiClient() throws IOException {
 		var apiClient = new ApiClient(buildRestTemplate());
+		apiClient.setBasePath(stravaProperties.getHostUrl());
 		// Configure OAuth2 access token for authorization: strava_oauth
 		var stravaOauth = (OAuth) apiClient.getAuthentication("strava_oauth");
 		stravaOauth.setAccessToken(oauthHelper.getAccessToken());

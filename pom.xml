@@ -331,7 +331,7 @@
 							<inputSpec>src/main/resources/schema/gade-strava-swagger-server.json</inputSpec>
 							<generatorName>spring</generatorName>
 							<output>${generated-server-directory}</output>
-							<generateApis>true</generateApis>
+							<generateApis>false</generateApis>
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
