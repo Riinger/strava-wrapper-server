@@ -1,6 +1,8 @@
 spring:
   application:
     name: strava-wrapper
+  jackson:
+    default-property-inclusion: NON_NULL
 
 server:
   servlet:
@@ -10,6 +12,6 @@ logging:
   config: classpath:config/logback.xml
 
 strava:
-#  config: file:///d:/workspace-sts/config/config.yml
+  config: classpath:config/config.yml
   cache:
     path: c:\\tmp\\cache\\strava-cache-2025.ser

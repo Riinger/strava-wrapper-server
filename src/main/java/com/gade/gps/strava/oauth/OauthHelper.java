@@ -43,7 +43,7 @@ public class OauthHelper {
     }
 	
 	public ApiClient getApiClient() throws IOException {
-		ApiClient defaultClient = Configuration.getDefaultApiClient();
+		var defaultClient = Configuration.getDefaultApiClient();
 		// Configure OAuth2 access token for authorization: strava_oauth
 		var stravaOauth = (OAuth) defaultClient.getAuthentication("strava_oauth");
 		stravaOauth.setAccessToken(getAccessToken());
@@ -52,17 +52,17 @@ public class OauthHelper {
 
 	private String getAccessToken() throws IOException {
 		// If our token has (nearly) expired, then refresh it
-		long expiresAt = token.getExpiresAt();
-		LocalDateTime expiresAtDateTime = LocalDateTime.ofEpochSecond(expiresAt, 0, OffsetDateTime.now().getOffset());
+		var expiresAt = token.getExpiresAt();
+		var expiresAtDateTime = LocalDateTime.ofEpochSecond(expiresAt, 0, OffsetDateTime.now().getOffset());
 		log.debug("Access token expires at {}", expiresAtDateTime);
-		// Refresh the token if it expires in the next 5 minutes
-		if ( LocalDateTime.now().plusMinutes(5).isBefore(expiresAtDateTime) ) {
+		// Refresh the token if it expires in the next configurable minutes (default 5)
+		if ( LocalDateTime.now().plusMinutes(stravaProperties.getExpiryBuffer()).isBefore(expiresAtDateTime) ) {
 			return token.getAccessToken();
 		}
-		log.debug("Access token will have expired in the next 5 minutes, so refresh");
-		RestTemplate restTemplate = new RestTemplate();
+		log.info("Access token will have expired in the next {} minutes, so refresh", stravaProperties.getExpiryBuffer());
+		var restTemplate = new RestTemplate();
 		
-		HttpHeaders headers = new HttpHeaders();
+		var headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -74,14 +74,14 @@ public class OauthHelper {
 		
 		HttpEntity<String> request = new HttpEntity<>(urlEncodeUTF8(formParams), headers);
 		
-		String accessTokenUrl = stravaProperties.getHostUrl() + stravaProperties.getOauthtokenUri();
+		var accessTokenUrl = stravaProperties.getHostUrl() + stravaProperties.getOauthtokenUri();
 
 		ResponseEntity<String> response = restTemplate.postForEntity(accessTokenUrl, request, String.class);
 
 		log.debug("Access Token Response ---------" + response.getBody());
 		log.debug("             Status   ---------" + response.getStatusCode());
 		if ( response.getStatusCode() == HttpStatus.OK ) {
-			ObjectMapper mapper = new ObjectMapper();
+			var mapper = new ObjectMapper();
 			token.rewrite(mapper.readValue(response.getBody(), StravaToken.class));
 			log.debug("New refresh token = {}", token.getRefreshToken());
 			return token.getAccessToken();
@@ -90,8 +90,8 @@ public class OauthHelper {
 	}
 	
     private static String urlEncodeUTF8(Map<String, String> map) {
-    	StringBuilder sb = new StringBuilder();
-    	for (Map.Entry<String, String> entry : map.entrySet()) {
+    	var sb = new StringBuilder();
+    	for (var entry : map.entrySet()) {
 	        if (!sb.isEmpty()) {
 	            sb.append("&");
 	        }

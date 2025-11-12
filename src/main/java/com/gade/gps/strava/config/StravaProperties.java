@@ -18,15 +18,5 @@ public class StravaProperties {
 	private String clientId;
 	private String clientSecret;
 	private String grantType;
-	private Activities activities;
-	private Streams streams;
-	
-	@Data
-	public static class Activities {
-		private String cacheFile;
-	}
-	@Data
-	public static class Streams {
-		private String cacheFile;
-	}
+	private Integer expiryBuffer = 5; // minutes
 }
