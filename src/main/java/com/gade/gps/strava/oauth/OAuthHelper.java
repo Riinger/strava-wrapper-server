@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class OauthHelper {
+public class OAuthHelper {
 	private static final String PARAM_CLIENT_SECRET = "client_secret";
 	private static final String PARAM_CLIENT_ID = "client_id";
 	private static final String PARAM_GRANT_TYPE = "grant_type";
@@ -37,7 +37,7 @@ public class OauthHelper {
 	final StravaProperties stravaProperties;
 	final StravaToken token;
 
-    OauthHelper(StravaProperties stravaProperties, StravaToken token) {
+    OAuthHelper(StravaProperties stravaProperties, StravaToken token) {
         this.stravaProperties = stravaProperties;
         this.token = token;
     }

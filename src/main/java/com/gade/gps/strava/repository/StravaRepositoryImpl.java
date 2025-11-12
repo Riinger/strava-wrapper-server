@@ -12,16 +12,16 @@ import com.gade.gps.strava.client.api.ActivitiesApi;
 import com.gade.gps.strava.client.api.GearsApi;
 import com.gade.gps.strava.client.model.DetailedGear;
 import com.gade.gps.strava.client.model.SummaryActivity;
-import com.gade.gps.strava.oauth.OauthHelper;
+import com.gade.gps.strava.oauth.OAuthHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
 public class StravaRepositoryImpl implements StravaRepository {
-	final OauthHelper helper;
+	final OAuthHelper helper;
 
-    StravaRepositoryImpl(OauthHelper helper) {
+    StravaRepositoryImpl(OAuthHelper helper) {
         this.helper = helper;
     }
 
