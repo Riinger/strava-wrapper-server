@@ -74,10 +74,6 @@ public class RepositoryHelper {
         }
 
         protected void logResponse(ClientHttpResponse response) throws IOException {
-//            log.info("HTTP Status Code: " + response.getStatusCode().value());
-//            log.info("Status Text: " + response.getStatusText());
-//            log.info("HTTP Headers: " + headersToString(response.getHeaders()));
-//            log.info("Response Body: " + bodyToString(response.getBody()));
     		log.info("<== Downstream API returned : HTTP Status Code = '{}', Status Text = '{}', Headers = '{}'", 
     				response.getStatusCode().value(),
     				response.getStatusText(),

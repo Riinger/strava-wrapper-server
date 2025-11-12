@@ -13,12 +13,12 @@ public abstract class SummaryMapper {
 		gsa.setActivityCount(1);
 		gsa.setAverageCadence(sa.getAverageCadence());
 		gsa.setAverageHeartrate(sa.getAverageHeartrate());
-		gsa.setAverageWatts(sa.getAverageWatts());
+//		gsa.setAverageWatts(sa.getAverageWatts());
 		gsa.setDeviceName(sa.getDeviceName());
-		gsa.setDeviceWatts(sa.getDeviceWatts());
+//		gsa.setDeviceWatts(sa.getDeviceWatts());
 		gsa.setDistance(sa.getDistance());
 		gsa.setElapsedTime(sa.getElapsedTime());
-		gsa.setElevHigh(sa.getElevHigh());
+//		gsa.setElevHigh(sa.getElevHigh());
 		gsa.setEndLatlng(sa.getEndLatlng().isEmpty() ? null : sa.getEndLatlng());
 		gsa.setGear(sa.getGearId());
 		gsa.setId(sa.getId());
@@ -35,13 +35,7 @@ public abstract class SummaryMapper {
 		return gsa;
 	}
 	public static List<GadeSummaryActivity> mapToGadeList(List<SummaryActivity> saList) {
-//		List<GadeSummaryActivity> gsaList = new ArrayList<>();
-//		saList.forEach(sa -> gsaList.add(mapToGade(sa)));
-//		for ( var sa : saList ) {
-//			gsaList.add(mapToGade(sa));
-//		}
 		return saList.stream().map(sa -> mapToGade(sa)).toList();
-//		return gsaList;
 	}
 	
 }
