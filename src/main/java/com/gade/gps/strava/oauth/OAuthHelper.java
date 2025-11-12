@@ -19,9 +19,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gade.gps.strava.StravaApplicationRuntimeException;
-import com.gade.gps.strava.client.ApiClient;
-import com.gade.gps.strava.client.Configuration;
-import com.gade.gps.strava.client.auth.OAuth;
 import com.gade.gps.strava.config.StravaProperties;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,20 +38,12 @@ public class OAuthHelper {
         this.stravaProperties = stravaProperties;
         this.token = token;
     }
-	
-	public ApiClient getApiClient() throws IOException {
-		var defaultClient = Configuration.getDefaultApiClient();
-		// Configure OAuth2 access token for authorization: strava_oauth
-		var stravaOauth = (OAuth) defaultClient.getAuthentication("strava_oauth");
-		stravaOauth.setAccessToken(getAccessToken());
-		return defaultClient;
-	}
 
-	private String getAccessToken() throws IOException {
+	public String getAccessToken() throws IOException {
 		// If our token has (nearly) expired, then refresh it
 		var expiresAt = token.getExpiresAt();
 		var expiresAtDateTime = LocalDateTime.ofEpochSecond(expiresAt, 0, OffsetDateTime.now().getOffset());
-		log.debug("Access token expires at {}", expiresAtDateTime);
+		log.info("Access token expires at {}", expiresAtDateTime);
 		// Refresh the token if it expires in the next configurable minutes (default 5)
 		if ( LocalDateTime.now().plusMinutes(stravaProperties.getExpiryBuffer()).isBefore(expiresAtDateTime) ) {
 			return token.getAccessToken();
@@ -109,4 +98,5 @@ public class OAuthHelper {
 		    throw new UnsupportedOperationException(e);
 		}
 	}
+	
 }

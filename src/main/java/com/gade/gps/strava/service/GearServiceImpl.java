@@ -30,7 +30,7 @@ public class GearServiceImpl implements GearService {
 		if ( response.getStatusCode() == HttpStatus.OK ) {
 			return response.getBody();
 		}
-		log.error("Unable to get gerId - {} - {}", response.getStatusCode(), response.getBody());
+		log.error("Unable to get gearId - {} - {}", response.getStatusCode(), response.getBody());
 		throw new StravaApplicationRuntimeException("Cannot get gear id from Strava : {}" + response.getStatusCode());
 	}
 }

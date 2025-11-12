@@ -3,9 +3,8 @@ package com.gade.gps.strava.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +15,7 @@ import com.gade.gps.strava.service.GearService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.16.0")
 @RestController
@@ -25,17 +24,18 @@ public class GearsApiController {
 	@Autowired GearService service;
 	
     @GetMapping(
-        value = "/gears/{id}",
+        value = "/gear/{id}",
         produces = { MediaType.APPLICATION_JSON_VALUE }
     )
     @ResponseStatus(HttpStatus.OK)
     
     public DetailedGear getGearId(
-        @Parameter(name = "id", in = ParameterIn.PATH) @Valid @RequestParam(required = true) @Nullable String gearId
+//        @Parameter(name = "id", required = true, in = ParameterIn.PATH) String id
+        @NotNull @Parameter(name = "id", description = "The identifier of the gear.", required = true, in = ParameterIn.PATH) @PathVariable("id") String id
     ) {
 	
 		try {
-			return service.getGearById(gearId);
+			return service.getGearById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new StravaApplicationRuntimeException("Service failed : " + e.getMessage());

@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExceptionHandlerAspect {
 	
-	@Pointcut("within(@org.springframework.stereotype.Repository *) && within(com.gade.leisure.analytics.strava.repository.StravaRepositoryImpl)")
+	@Pointcut("within(@org.springframework.stereotype.Repository *) && within(com.gade.gps.strava.repository.StravaRepositoryImpl)")
 	public void stravaRepositoryPointcut() {
 		// Intentionally left blank
 	}
@@ -33,9 +33,9 @@ public class ExceptionHandlerAspect {
 		} catch (HttpStatusCodeException ex) {
 			// Do not always log as error, it may be an acceptable HTTP status code
 			if ( ex.getStatusCode().is5xxServerError() ) {
-				log.error("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replace("\\n", ""));
+				log.error("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replaceAll("\\n", ""));
 			} else {
-				log.debug("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replace("\\n", ""));
+				log.debug("HttpStatusCodeException caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replaceAll("\\n", ""));
 			}
 			String message = ex.getMessage();
 			if ( ex.getResponseBodyAsString() != null ) {

@@ -308,10 +308,9 @@
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
-								<library>apache-httpclient</library>
-
+								<!--<hideGenerationTimestamp>true</hideGenerationTimestamp>-->
+								<library>resttemplate</library>
 								<useJakartaEe>true</useJakartaEe>
-
 								<apiPackage>${generated-client-package}.api</apiPackage>
 								<modelPackage>${generated-client-package}.model</modelPackage>
 								<invokerPackage>${generated-client-package}</invokerPackage>
@@ -332,17 +331,15 @@
 							<inputSpec>src/main/resources/schema/gade-strava-swagger-server.json</inputSpec>
 							<generatorName>spring</generatorName>
 							<output>${generated-server-directory}</output>
-							<generateApis>false</generateApis>
+							<generateApis>true</generateApis>
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
 								<library>spring-boot</library>
-
 								<useJakartaEe>true</useJakartaEe>
-
+								<apiPackage>${generated-server-package}.api</apiPackage>
 								<modelPackage>${generated-server-package}.model</modelPackage>
 								<invokerPackage>${generated-server-package}</invokerPackage>
-								
 								<skipOverwrite>true</skipOverwrite>
 							</configOptions>
 						</configuration>
