@@ -19,18 +19,18 @@ public abstract class SummaryMapper {
 		gsa.setDistance(sa.getDistance());
 		gsa.setElapsedTime(sa.getElapsedTime());
 		gsa.setElevHigh(sa.getElevHigh());
-		gsa.setEndLatlng(sa.getEndLatlng());
-		gsa.setGearId(sa.getGearId());
+		gsa.setEndLatlng(sa.getEndLatlng().isEmpty() ? null : sa.getEndLatlng());
+		gsa.setGear(sa.getGearId());
 		gsa.setId(sa.getId());
 		gsa.setKilojoules(sa.getKilojoules());
 		gsa.setMovingTime(sa.getMovingTime());
 		gsa.setName(sa.getName());
 		gsa.setSportType(sa.getSportType());
-		gsa.setStartDate(sa.getStartDate());
-		gsa.setStartLatlng(sa.getStartLatlng());
+		gsa.setStartDate(sa.getStartDateLocal());
+		gsa.setStartLatlng(sa.getStartLatlng().isEmpty() ? null : sa.getStartLatlng());
 		gsa.setTotalElevationGain(sa.getTotalElevationGain());
 		gsa.setTrainer(sa.getTrainer());
-		gsa.setWorkoutType(sa.getWorkoutType());
+//		gsa.setWorkoutType(sa.getWorkoutType());
 		
 		return gsa;
 	}

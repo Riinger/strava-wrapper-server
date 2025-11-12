@@ -61,9 +61,9 @@
             "type": "integer",
             "description": "The activity's workout type"
           },
-          "gear_id": {
+          "gear": {
             "type": "string",
-            "description": "The id of the gear for the activity"
+            "description": "The gear used for the activity"
           },
           "kilojoules": {
             "type": "number",
