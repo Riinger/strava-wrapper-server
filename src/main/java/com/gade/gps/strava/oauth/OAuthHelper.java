@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.config.StravaProperties;
@@ -39,7 +41,7 @@ public class OAuthHelper {
         this.token = token;
     }
 
-	public String getAccessToken() throws IOException {
+	public String getAccessToken() {
 		// If our token has (nearly) expired, then refresh it
 		var expiresAt = token.getExpiresAt();
 		var expiresAtDateTime = LocalDateTime.ofEpochSecond(expiresAt, 0, OffsetDateTime.now().getOffset());
@@ -71,9 +73,20 @@ public class OAuthHelper {
 		log.debug("             Status   ---------" + response.getStatusCode());
 		if ( response.getStatusCode() == HttpStatus.OK ) {
 			var mapper = new ObjectMapper();
-			token.rewrite(mapper.readValue(response.getBody(), StravaToken.class));
-			log.debug("New refresh token = {}", token.getRefreshToken());
-			return token.getAccessToken();
+			var msg = "";
+			try {
+				token.rewrite(mapper.readValue(response.getBody(), StravaToken.class));
+				log.debug("New refresh token = {}", token.getRefreshToken());
+				return token.getAccessToken();
+			} catch (JsonMappingException e) {
+				msg = String.format("Access Token error : %s:%s - %s", e.getClass().getSimpleName(), e.getPathReference(), e.getMessage());
+			} catch (JsonProcessingException e) {
+				msg = String.format("Access Token error : %s:Line %d, Column %d - %s", e.getClass().getSimpleName(), e.getLocation().getLineNr(), e.getLocation().getColumnNr(), e.getMessage());
+			} catch (IOException e) {
+				msg = String.format("Access Token error : %s - %s", e.getClass().getSimpleName(), e.getMessage());
+			}
+			log.error(msg);
+			throw new StravaApplicationRuntimeException(msg);
 		}
 		throw new StravaApplicationRuntimeException("Strava returned non-successful status code " + response.getStatusCode());
 	}

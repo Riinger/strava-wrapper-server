@@ -2,8 +2,6 @@ package com.gade.gps.strava.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.web.client.RestClientException;
 
 import com.gade.gps.strava.config.StravaCache;
 import com.gade.gps.strava.repository.StravaRepository;
@@ -29,7 +26,7 @@ class AthleteServiceImplTest {
 	@MockitoBean StravaCache stravaCache;
 
 	@Test
-	void test_getLoggedInAthleteActivities() throws RestClientException, IOException {
+	void test_getLoggedInAthleteActivities() {
 		var mockedResponseEntity = ResponseEntity.ok(TestHelper.createRandomSummaryActivityList(2));
 		Mockito.when(stravaRepository.getLoggedInAthleteActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponseEntity);
 
@@ -37,7 +34,7 @@ class AthleteServiceImplTest {
 		assertEquals(2, response.size());
 	}
 	@Test
-	void test_cachedActivities() throws RestClientException, IOException {
+	void test_cachedActivities() {
 		var mockedCacheResponse = TestHelper.createRandomSummaryActivityList(1);
 		var mockedResponseEntity = ResponseEntity.ok(TestHelper.createRandomSummaryActivityList(3));
 		Mockito.when(stravaRepository.getLoggedInAthleteActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponseEntity);

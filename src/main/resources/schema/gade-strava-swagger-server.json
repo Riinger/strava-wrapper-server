@@ -31,6 +31,12 @@
 								"$ref": "sub-schema/gade-activity.json#/GadeSummaryActivity"
 							}
 						}
+					},
+					"default": {
+						"description": "Unexpected error.",
+						"schema": {
+							"$ref": "sub-schema/fault.json#/Fault"
+						}
 					}
 				}
 			}
@@ -69,6 +75,12 @@
 								"frame_type": 3,
 								"description": "My Bike."
 							}
+						}
+					},
+					"default": {
+						"description": "Unexpected error.",
+						"schema": {
+							"$ref": "sub-schema/fault.json#/Fault"
 						}
 					}
 				}

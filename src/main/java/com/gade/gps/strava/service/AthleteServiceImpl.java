@@ -1,6 +1,5 @@
 package com.gade.gps.strava.service;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -34,16 +33,16 @@ public class AthleteServiceImpl implements AthleteService {
     }
 
     @Override
-	public List<GadeSummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) throws IOException {
+	public List<GadeSummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) {
 		var response = stravaRepository.getLoggedInAthleteActivities(before, after, page, pageSize);
 		if ( response.getStatusCode() == HttpStatus.OK ) {
 			return SummaryMapper.mapToGadeList(response.getBody());
 		}
 		log.error("Unable to get activities - {} - {}", response.getStatusCode(), response.getBody());
-		throw new StravaApplicationRuntimeException("Cannot get activities from Strava : {}" + response.getStatusCode());
+		throw new StravaApplicationRuntimeException("Cannot get activities from Strava : {}" + response.getStatusCode().value());
 	}
     @Override
-	public List<GadeSummaryActivity> getActivities(Boolean updateCache) throws IOException {
+	public List<GadeSummaryActivity> getActivities(Boolean updateCache) {
     	List<SummaryActivity> activities = this.stravaCache.getCachedActivities();
     	var latestAct = StravaCache.getLatestActivity(activities);
     	if ( Boolean.TRUE.equals(updateCache) ) {

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import lombok.Data;
 
 @ConfigurationProperties(prefix = "strava")
-//@PropertySource(value = "classpath:strava-config.yml", ignoreResourceNotFound = true, factory = YamlPropertySourceFactory.class)
+@PropertySource(value = "classpath:strava-config.yml", ignoreResourceNotFound = true, factory = YamlPropertySourceFactory.class)
 //@PropertySource(value = "classpath:strava-config-${spring.profiles.active}.yml", ignoreResourceNotFound = true, factory = YamlPropertySourceFactory.class)
 @PropertySource(value = "${strava.config}", ignoreResourceNotFound = true, factory = YamlPropertySourceFactory.class)
 @Data

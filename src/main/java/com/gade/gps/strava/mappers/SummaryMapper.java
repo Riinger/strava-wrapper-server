@@ -37,5 +37,7 @@ public abstract class SummaryMapper {
 	public static List<GadeSummaryActivity> mapToGadeList(List<SummaryActivity> saList) {
 		return saList.stream().map(sa -> mapToGade(sa)).toList();
 	}
-	
+	private SummaryMapper() {
+		// Hide constructor
+	}
 }

@@ -1,5 +1,19 @@
 #!/bin/bash
 
+curl -s 'http://localhost:8080/api/v3/gear/'$1 -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n'  -H"CORRID: $1" -o $$.tmp  >$$.out
+STATUS=$(grep STATUS $$.out | sed -e "s/.* = //")
+if [[ $STATUS =~ ^2 ]] ; then
+	echo SUCCESS $STATUS
+	echo
+	cat $$.tmp | python -mjson.tool 
+else
+	echo FAILURE $STATUS
+	echo
+	cat $$.tmp
+fi
+rm -f $$.tmp $$.out
+exit
+
 if [ "$2" != "" ] ; then
 	curl -s 'http://localhost:8080/api/v3/gear/'$1 -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n' -H"CORRID: $2" -o $$.tmp 
 else

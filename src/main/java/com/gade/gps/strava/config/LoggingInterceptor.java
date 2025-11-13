@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoggingInterceptor implements HandlerInterceptor {
 	private static final String SEPARATOR = ",";
-//	private static final String SEPARATOR = ",\n" + new String(" ").repeat(23);
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

@@ -6,12 +6,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.Fault;
 
 import lombok.extern.slf4j.Slf4j;
@@ -46,10 +45,10 @@ public class ExceptionHandlerAspect {
 					; // silent ignore, use exception message
 				}
 			}
-			return ResponseEntity.status(ex.getStatusCode()).body(message);
+			throw new StravaApplicationRuntimeException(message);
 		} catch (Exception ex) {
 			log.error("Exception caught on {} - {} - {}", joinPoint.getSignature().getName(), ex.getMessage(), Arrays.toString(ex.getStackTrace()).replace('\r', ' '));
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());			
+			throw new StravaApplicationRuntimeException(ex.getMessage());
 		}
 	}
 }

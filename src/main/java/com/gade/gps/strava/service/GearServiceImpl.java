@@ -1,7 +1,5 @@
 package com.gade.gps.strava.service;
 
-import java.io.IOException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,7 @@ public class GearServiceImpl implements GearService {
     }
 
     @Override
-    public DetailedGear getGearById(String gearId) throws IOException {
+    public DetailedGear getGearById(String gearId) {
 		var response = stravaRepository.getGearById(gearId);
 		if ( response.getStatusCode() == HttpStatus.OK ) {
 			return response.getBody();
