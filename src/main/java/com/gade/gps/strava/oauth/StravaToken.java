@@ -71,10 +71,11 @@ public class StravaToken {
 	}
 	private String getAuthFilePath() {
 		var authFile = stravaProperties.getAuthFile();
-		if ( authFile.startsWith("classpath:") )
-		{
+		if ( authFile.startsWith("classpath:") ) {
 			authFile = authFile.replace("classpath:", "");
 			authFile = ClassLoader.getSystemResource(authFile).getFile();
+		} else if ( authFile.startsWith("file:///") ) {
+			authFile = authFile.replace("file:///", "");
 		}
 		return authFile;
 	}
