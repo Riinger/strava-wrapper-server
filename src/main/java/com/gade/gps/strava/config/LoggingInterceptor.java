@@ -1,6 +1,5 @@
 package com.gade.gps.strava.config;
 
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -21,11 +20,11 @@ public class LoggingInterceptor implements HandlerInterceptor {
 	public static final String CORRID_HEADER_NAME = "correlation-id";
 	private static final String SEPARATOR = ",";
 	
-	final StravaAppProperties stravaProperties;
-
-    LoggingInterceptor(StravaAppProperties stravaProperties) {
-        this.stravaProperties = stravaProperties;
-    }
+//	final StravaAppProperties stravaProperties;
+//
+//    LoggingInterceptor(StravaAppProperties stravaProperties) {
+//        this.stravaProperties = stravaProperties;
+//    }
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -48,9 +47,6 @@ public class LoggingInterceptor implements HandlerInterceptor {
 		var headersString = response.getHeaderNames().stream()
 				.map(h -> h + " : " + response.getHeader(h)).collect(Collectors.joining(SEPARATOR));
 		log.info("<=== Processed, HTTP response : Headers = '{}'. HTTP status =  {}", headersString, response.getStatus());
-		if ( Boolean.TRUE.equals(stravaProperties.getArchive().getEnabled()) ) {
-			// Write response to <page>.<lastActivityDate>.response
-		}
 		MDC.remove(CORRID_HEADER_NAME);
 	}
 }

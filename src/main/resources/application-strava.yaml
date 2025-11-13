@@ -18,10 +18,10 @@ strava:
   cache:
     path: c:\\tmp\\cache\\strava-cache-2025.ser
   auth:
-    auth-file: src\\main\\resources\\config\\strava-token-local.properties
-    host-url: http://localhost:12319
+    auth-file: c:\\dev\\workspace\\GITHUB\\config\\dell\\strava-token.properties
+    host-url: https://www.strava.com/api/v3
     oauthtoken-uri: /oauth/token
-    client-id: 0000
-    client-secret: 0000
+    client-id: 4270
+    client-secret: cf147e77c98de2f5ee672d7736f63ff26d37d570
     grant-type: refresh_token
     expiry-buffer: 180
