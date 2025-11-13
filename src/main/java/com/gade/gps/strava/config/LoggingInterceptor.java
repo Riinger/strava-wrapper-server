@@ -18,14 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class LoggingInterceptor implements HandlerInterceptor {
+	public static final String CORRID_HEADER_NAME = "correlation-id";
 	private static final String SEPARATOR = ",";
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		var uuid = Optional.ofNullable(request.getHeader("CORRID")).orElse(UUID.randomUUID().toString()); 
-		MDC.put("REQID", uuid);
+		var uuid = Optional.ofNullable(request.getHeader(CORRID_HEADER_NAME)).orElse(UUID.randomUUID().toString()); 
+		MDC.put(CORRID_HEADER_NAME, uuid);
 		var headersString = Collections.list(request.getHeaderNames()).stream()
 				.map(h -> h + " : " + Collections.list(request.getHeaders(h))).collect(Collectors.joining(SEPARATOR));
 		var queryParamString = request.getParameterMap().entrySet().stream().map(p -> p.getKey() + "=" + Arrays.toString(p.getValue())).collect(Collectors.joining(SEPARATOR));

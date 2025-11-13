@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
@@ -20,6 +21,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import com.gade.gps.strava.client.ApiClient;
 import com.gade.gps.strava.client.auth.OAuth;
+import com.gade.gps.strava.config.LoggingInterceptor;
 import com.gade.gps.strava.config.StravaProperties;
 import com.gade.gps.strava.oauth.OAuthHelper;
 
@@ -62,6 +64,7 @@ public class RepositoryHelper {
         @Override
         public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
             logRequest(request, body);
+            request.getHeaders().add(LoggingInterceptor.CORRID_HEADER_NAME, MDC.get(LoggingInterceptor.CORRID_HEADER_NAME));
             ClientHttpResponse response = execution.execute(request, body);
             logResponse(response);
             return response;

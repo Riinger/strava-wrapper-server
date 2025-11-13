@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl -s 'http://localhost:8080/api/v3/gear/'$1 -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n'  -H"CORRID: $1" -o $$.tmp  >$$.out
+curl -s 'http://localhost:8080/api/v3/gear/'$1 -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n'  -H"correlation-id: $1" -o $$.tmp  >$$.out
 STATUS=$(grep STATUS $$.out | sed -e "s/.* = //")
 if [[ $STATUS =~ ^2 ]] ; then
 	echo SUCCESS $STATUS
@@ -15,7 +15,7 @@ rm -f $$.tmp $$.out
 exit
 
 if [ "$2" != "" ] ; then
-	curl -s 'http://localhost:8080/api/v3/gear/'$1 -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n' -H"CORRID: $2" -o $$.tmp 
+	curl -s 'http://localhost:8080/api/v3/gear/'$1 -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n' -H"correlation-id: $2" -o $$.tmp 
 else
 	curl -s 'http://localhost:8080/api/v3/gear/'$1 -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n' -o $$.tmp 
 fi
