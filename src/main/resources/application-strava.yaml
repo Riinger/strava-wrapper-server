@@ -13,7 +13,7 @@ logging:
 
 strava:
   archive:
-    enabled: true
+    enabled: false
     directory: c:\\tmp\\archive
   cache:
     path: c:\\tmp\\cache\\strava-cache-2025.ser
