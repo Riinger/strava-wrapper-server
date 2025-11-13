@@ -22,7 +22,7 @@
     <listAttribute key="org.eclipse.jdt.launching.MODULEPATH"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="strava-wrapper-server"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.springframework.ide.eclipse.boot.launch.BootMavenSourcePathProvider"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dsun.io.serialization.extendedDebugInfo=true -Dxstrava.config=file:///c:\\dev\\workspace\\GITHUB\\config\\dell\\strava-config.yml -Dstrava.config=file:///${project_loc:/strava-wrapper-server/src/main/resources/config/strava-config-local.yml}\\src\\main\\resources\\config\\strava-config-local.yml"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dsun.io.serialization.extendedDebugInfo=true -Dxspring.config.location=fred.txt"/>
     <stringAttribute key="process_factory_id" value="org.springframework.ide.eclipse.boot.launch.process.BootProcessFactory"/>
     <booleanAttribute key="spring.boot.ansi.console" value="true"/>
     <stringAttribute key="spring.boot.app.properties" value=""/>

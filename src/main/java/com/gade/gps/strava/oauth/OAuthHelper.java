@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gade.gps.strava.StravaApplicationRuntimeException;
-import com.gade.gps.strava.config.StravaProperties;
+import com.gade.gps.strava.config.StravaAppProperties;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,10 +33,10 @@ public class OAuthHelper {
 	private static final String PARAM_GRANT_TYPE = "grant_type";
 	private static final String PARAM_REFRESH_TOKEN = "refresh_token";
 	
-	final StravaProperties stravaProperties;
+	final StravaAppProperties stravaProperties;
 	final StravaToken token;
 
-    OAuthHelper(StravaProperties stravaProperties, StravaToken token) {
+    OAuthHelper(StravaAppProperties stravaProperties, StravaToken token) {
         this.stravaProperties = stravaProperties;
         this.token = token;
     }
@@ -47,10 +47,11 @@ public class OAuthHelper {
 		var expiresAtDateTime = LocalDateTime.ofEpochSecond(expiresAt, 0, OffsetDateTime.now().getOffset());
 		log.info("Access token expires at {}", expiresAtDateTime);
 		// Refresh the token if it expires in the next configurable minutes (default 5)
-		if ( LocalDateTime.now().plusMinutes(stravaProperties.getExpiryBuffer()).isBefore(expiresAtDateTime) ) {
+		var stravaAuth = stravaProperties.getAuth(); 
+		if ( LocalDateTime.now().plusMinutes(stravaAuth.getExpiryBuffer()).isBefore(expiresAtDateTime) ) {
 			return token.getAccessToken();
 		}
-		log.info("Access token will have expired in the next {} minutes, so refresh", stravaProperties.getExpiryBuffer());
+		log.info("Access token will have expired in the next {} minutes, so refresh", stravaAuth.getExpiryBuffer());
 		var restTemplate = new RestTemplate();
 		
 		var headers = new HttpHeaders();
@@ -58,14 +59,14 @@ public class OAuthHelper {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		Map<String, String> formParams = new HashMap<>();
-		formParams.put(PARAM_CLIENT_ID, stravaProperties.getClientId());
-		formParams.put(PARAM_CLIENT_SECRET, stravaProperties.getClientSecret());
-		formParams.put(PARAM_GRANT_TYPE, stravaProperties.getGrantType());
+		formParams.put(PARAM_CLIENT_ID, stravaAuth.getClientId());
+		formParams.put(PARAM_CLIENT_SECRET, stravaAuth.getClientSecret());
+		formParams.put(PARAM_GRANT_TYPE, stravaAuth.getGrantType());
 		formParams.put(PARAM_REFRESH_TOKEN, token.getRefreshToken());
 		
 		HttpEntity<String> request = new HttpEntity<>(urlEncodeUTF8(formParams), headers);
 		
-		var accessTokenUrl = stravaProperties.getHostUrl() + stravaProperties.getOauthtokenUri();
+		var accessTokenUrl = stravaAuth.getHostUrl() + stravaAuth.getOauthtokenUri();
 
 		ResponseEntity<String> response = restTemplate.postForEntity(accessTokenUrl, request, String.class);
 

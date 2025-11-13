@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.gade.gps.strava.config.StravaProperties;
+import com.gade.gps.strava.config.StravaAppProperties;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
@@ -20,7 +20,7 @@ import lombok.Data;
 @Component
 @Data
 public class StravaToken {
-	@Autowired StravaProperties stravaProperties;
+	@Autowired StravaAppProperties stravaProperties;
 
 	@JsonAlias("token_type")
 	private String tokenType;
@@ -70,7 +70,7 @@ public class StravaToken {
 		}
 	}
 	private String getAuthFilePath() {
-		var authFile = stravaProperties.getAuthFile();
+		var authFile = stravaProperties.getAuth().getAuthFile();
 		if ( authFile.startsWith("classpath:") ) {
 			authFile = authFile.replace("classpath:", "");
 			authFile = ClassLoader.getSystemResource(authFile).getFile();

@@ -1,8 +1,0 @@
-strava:
-  auth-file: src\\main\\resources\\config\\strava-token-local.properties
-  host-url: http://localhost:12319
-  oauthtoken-uri: /oauth/token
-  client-id: 0000
-  client-secret: 0000
-  grant-type: refresh_token
-  expiry-buffer: 180

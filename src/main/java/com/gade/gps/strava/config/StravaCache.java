@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.gade.gps.strava.client.model.SummaryActivity;
@@ -22,19 +21,18 @@ import lombok.extern.slf4j.Slf4j;
 public class StravaCache implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Value("${strava.cache.path}")
-	private String cacheFilePath;
+	final StravaAppProperties stravaProperties;
 
-	private String getCacheFile() {
-		return cacheFilePath;
-	}
+    StravaCache(StravaAppProperties stravaProperties) {
+        this.stravaProperties = stravaProperties;
+    }
 
 	@SuppressWarnings("unchecked")
 	public List<SummaryActivity> getCachedActivities()
 	{
 		List<SummaryActivity> result = null;
 
-	      try (FileInputStream fileIn = new FileInputStream(getCacheFile());
+	      try (FileInputStream fileIn = new FileInputStream(stravaProperties.getCache().getPath());
 				ObjectInputStream in = new ObjectInputStream(fileIn))
 	      {
 	         result = (List<SummaryActivity>) in.readObject();
@@ -65,7 +63,7 @@ public class StravaCache implements Serializable {
 	}
 
 	public void update(List<SummaryActivity> body) {
-		String cacheFile = getCacheFile();
+		String cacheFile = stravaProperties.getCache().getPath();
 		try (FileOutputStream fileOut = new FileOutputStream(cacheFile);
 				ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
 			out.writeObject(body);

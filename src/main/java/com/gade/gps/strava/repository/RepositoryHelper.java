@@ -22,7 +22,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import com.gade.gps.strava.client.ApiClient;
 import com.gade.gps.strava.client.auth.OAuth;
 import com.gade.gps.strava.config.LoggingInterceptor;
-import com.gade.gps.strava.config.StravaProperties;
+import com.gade.gps.strava.config.StravaAppProperties;
 import com.gade.gps.strava.oauth.OAuthHelper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,17 +31,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RepositoryHelper {
 	
-	final StravaProperties stravaProperties;
+	final StravaAppProperties stravaProperties;
 	final OAuthHelper oauthHelper;
 
-	RepositoryHelper(StravaProperties stravaProperties, OAuthHelper oauthHelper) {
+	RepositoryHelper(StravaAppProperties stravaProperties, OAuthHelper oauthHelper) {
         this.stravaProperties = stravaProperties;
         this.oauthHelper = oauthHelper;
     }
 	
 	public ApiClient getApiClient() {
 		var apiClient = new ApiClient(buildRestTemplate());
-		apiClient.setBasePath(stravaProperties.getHostUrl());
+		apiClient.setBasePath(stravaProperties.getAuth().getHostUrl());
 		// Configure OAuth2 access token for authorization: strava_oauth
 		var stravaOauth = (OAuth) apiClient.getAuthentication("strava_oauth");
 		stravaOauth.setAccessToken(oauthHelper.getAccessToken());

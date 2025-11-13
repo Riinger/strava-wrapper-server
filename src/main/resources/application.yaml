@@ -12,6 +12,16 @@ logging:
   config: classpath:config/logback.xml
 
 strava:
-  config: classpath:config/config.yml
+  archive:
+    enabled: true
+    directory: c:\\tm[\\archive
   cache:
     path: c:\\tmp\\cache\\strava-cache-2025.ser
+  auth:
+    auth-file: src\\main\\resources\\config\\strava-token-local.properties
+    host-url: http://localhost:12319
+    oauthtoken-uri: /oauth/token
+    client-id: 0000
+    client-secret: 0000
+    grant-type: refresh_token
+    expiry-buffer: 180
