@@ -3,8 +3,11 @@ Server Wrapper to Strava API
 
 # TODO
 - Simulator responses for activities API
+    - Gather responses (archive mechanism)
+    - Add to simulator
+- Error codes currently hard-coded
 - gear vs gears
-- Pass CORRID to sim and use in logging
+- ~Pass CORRID to sim and use in logging~
 - Global API Client
 - Use gear API to populate cache for use on activities API (GadeSummaryActivity should return gear string)
 - Detailed Activity

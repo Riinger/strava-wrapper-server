@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl -s 'http://localhost:8080/api/v3/athlete/activities?page=7' -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n'  -H"correlation-id: $1" -o $$.tmp  >$$.out
+curl -s 'http://localhost:8080/api/v3/athlete/activities?after=0' -H'Accept: application/json' -w 'STATUS = %{http_code}\n\n'  -H"correlation-id: $1" -o $$.tmp  >$$.out
 STATUS=$(grep STATUS $$.out | sed -e "s/.* = //")
 if [[ $STATUS =~ ^2 ]] ; then
 	echo SUCCESS $STATUS
@@ -9,7 +9,8 @@ if [[ $STATUS =~ ^2 ]] ; then
 else
 	echo FAILURE $STATUS
 	echo
-	cat $$.tmp
+#	cat $$.tmp
+	cat $$.tmp | python -mjson.tool 
 fi
 rm -f $$.tmp $$.out
 exit

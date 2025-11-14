@@ -1,8 +1,10 @@
 package com.gade.gps.strava.utils;
 
+import com.gade.gps.strava.client.model.GadeError;
+
 public abstract class StravaHelper {
-	public static com.gade.gps.strava.client.model.Error createError(String code, String msg, String url) {
-		var err = new com.gade.gps.strava.client.model.Error();
+	public static GadeError createError(String code, String msg, String url) {
+		var err = new GadeError();
 		err.setCode(code);
 		err.setField(msg);
 		err.setResource(url);

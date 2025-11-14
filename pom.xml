@@ -305,6 +305,7 @@
 							<generatorName>java</generatorName>
 							<output>${generated-client-directory}</output>
 							<generateApis>true</generateApis>
+							<modelNameMappings>Error=GadeError</modelNameMappings>
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
@@ -332,6 +333,7 @@
 							<generatorName>spring</generatorName>
 							<output>${generated-server-directory}</output>
 							<generateApis>false</generateApis>
+							<modelNameMappings>Error=GadeError</modelNameMappings>
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
