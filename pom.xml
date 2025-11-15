@@ -308,7 +308,6 @@
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
-								<!--<hideGenerationTimestamp>true</hideGenerationTimestamp>-->
 								<library>resttemplate</library>
 								<useJakartaEe>true</useJakartaEe>
 								<apiPackage>${generated-client-package}.api</apiPackage>

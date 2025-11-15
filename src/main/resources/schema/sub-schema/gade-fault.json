@@ -19,12 +19,12 @@
 	"GadeError": {
 		"type": "object",
 		"properties": {
-			"reason": {
-				"description": "Reason for error",
+			"message": {
+				"description": "Extra information",
 				"type": "string"
 			},
-			"extraData": {
-				"description": "Extra information",
+			"reason": {
+				"description": "Reason for error",
 				"type": "string"
 			}
 		}

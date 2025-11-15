@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.DetailedGear;
 import com.gade.gps.strava.service.GearService;
 
@@ -30,15 +29,9 @@ public class GearsApiController {
     @ResponseStatus(HttpStatus.OK)
     
     public DetailedGear getGearId(
-//        @Parameter(name = "id", required = true, in = ParameterIn.PATH) String id
         @NotNull @Parameter(name = "id", description = "The identifier of the gear.", required = true, in = ParameterIn.PATH) @PathVariable("id") String id
     ) {
 	
-		try {
-			return service.getGearById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new StravaApplicationRuntimeException("Service failed : " + e.getMessage());
-		}
+	return service.getGearById(id);
     }
 }

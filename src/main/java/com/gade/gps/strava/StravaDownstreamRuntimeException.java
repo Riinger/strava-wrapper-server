@@ -1,24 +1,21 @@
 package com.gade.gps.strava;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
-import com.gade.gps.strava.client.model.GadeFault;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-import lombok.Data;
-
-@Data
+@EqualsAndHashCode(callSuper=false)
+@Getter
 public class StravaDownstreamRuntimeException extends RuntimeException {
 	private static final long serialVersionUID = -2605679113205385225L;
 	
-	private HttpStatusCode httpStatus;
-	private HttpStatusCode dsHttpStatus;
-	private GadeFault fault;
+	private final HttpStatusCode dsHttpStatus;
+	private final String resource;
 	
-	public StravaDownstreamRuntimeException(String message) {
+	public StravaDownstreamRuntimeException(String message, HttpStatusCode dsStatusCode, String resource) {
 		super(message);
-		this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		this.dsHttpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-		this.fault = null;
+		this.dsHttpStatus = dsStatusCode;
+		this.resource = resource;
 	}
 }

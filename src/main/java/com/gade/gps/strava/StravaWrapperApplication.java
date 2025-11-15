@@ -15,7 +15,7 @@ public class StravaWrapperApplication {
     }
 
     @Bean(name = "com.gade.gps.strava.server.OpenApiGeneratorApplication.jsonNullableModule")
-	public Module jsonNullableModule() {
+	Module jsonNullableModule() {
         return new JsonNullableModule();
     }
 

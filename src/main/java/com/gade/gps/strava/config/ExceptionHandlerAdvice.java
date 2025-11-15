@@ -31,16 +31,11 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(fault, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	@ExceptionHandler(StravaDownstreamRuntimeException.class)
-	public static final ResponseEntity<Object> catchAllHandler(HttpServletRequest request, StravaDownstreamRuntimeException ex) {
+	public static final ResponseEntity<Object> catchAllHandler(StravaDownstreamRuntimeException ex) {
 		 
-		log.error("EXCEPTION caught : {} - {}", ex.getMessage(), Arrays.toString(ex.getStackTrace()));
-		var errs = new ArrayList<GadeError>();
-		errs.add(new GadeError(ex.getMessage(), "URI=" + request.getRequestURI()));
-		errs.add(new GadeError("Exception '" + ex.getClass().getSimpleName() + "'", null));
-		var fault = new GadeFault("Request failed", errs);
-
-		ex.getFault().getDetails().forEach(fault::addDetailsItem);
-		return new ResponseEntity<>(fault, HttpStatus.INTERNAL_SERVER_ERROR);
+		log.debug("Downstream error occurred : {} - {}", ex.getMessage(), Arrays.toString(ex.getStackTrace()));
+		var err = new GadeError("Downstream Strava call to '" + ex.getResource() + "' failed with HTTP Status code '" + ex.getDsHttpStatus().value() + "'", ex.getMessage());
+		return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 }

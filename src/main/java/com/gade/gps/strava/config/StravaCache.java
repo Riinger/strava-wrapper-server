@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class StravaCache implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	final StravaAppProperties stravaProperties;
+	private transient StravaAppProperties stravaProperties;
 
     StravaCache(StravaAppProperties stravaProperties) {
         this.stravaProperties = stravaProperties;

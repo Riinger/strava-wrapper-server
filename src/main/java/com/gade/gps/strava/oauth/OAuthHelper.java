@@ -45,13 +45,13 @@ public class OAuthHelper {
 		// If our token has (nearly) expired, then refresh it
 		var expiresAt = token.getExpiresAt();
 		var expiresAtDateTime = LocalDateTime.ofEpochSecond(expiresAt, 0, OffsetDateTime.now().getOffset());
-		log.info("Access token expires at {}", expiresAtDateTime);
+		log.debug("Access token expires at {}", expiresAtDateTime);
 		// Refresh the token if it expires in the next configurable minutes (default 5)
 		var stravaAuth = stravaProperties.getAuth(); 
 		if ( LocalDateTime.now().plusMinutes(stravaAuth.getExpiryBuffer()).isBefore(expiresAtDateTime) ) {
 			return token.getAccessToken();
 		}
-		log.info("Access token will have expired in the next {} minutes, so refresh", stravaAuth.getExpiryBuffer());
+		log.debug("Access token will have expired in the next {} minutes, so refresh", stravaAuth.getExpiryBuffer());
 		var restTemplate = new RestTemplate();
 		
 		var headers = new HttpHeaders();

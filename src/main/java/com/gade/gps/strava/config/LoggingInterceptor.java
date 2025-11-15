@@ -19,12 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 public class LoggingInterceptor implements HandlerInterceptor {
 	public static final String CORRID_HEADER_NAME = "correlation-id";
 	private static final String SEPARATOR = ",";
-	
-//	final StravaAppProperties stravaProperties;
-//
-//    LoggingInterceptor(StravaAppProperties stravaProperties) {
-//        this.stravaProperties = stravaProperties;
-//    }
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

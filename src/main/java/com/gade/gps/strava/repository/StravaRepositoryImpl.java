@@ -58,17 +58,9 @@ public class StravaRepositoryImpl implements StravaRepository {
 				.map(this::offsetDateTimeToString)
 				.map(s -> "." + s)
 				.orElse("");
-//			var lastDate2 = Optional.ofNullable(result)
-//					.filter(l -> !l.isEmpty())
-//					.map(List::getLast)
-//					.map(SummaryActivity::getStartDateLocal)
-//					.map(OffsetDateTime::toEpochSecond)
-//					.map(s -> "." + s)
-//					.orElse("");
 			
 			try {
 				archiveResponse(String.format("getLoggedInAthleteActivities.%d%s.%s", page, lastDate, ARCHIVE_FILE_EXT), objectMapper.writeValueAsString(result));
-//				archiveResponse(String.format("getLoggedInAthleteActivities.%d%s.%s", page, lastDate2, ARCHIVE_FILE_EXT), objectMapper.writeValueAsString(result));
 			} catch (JsonProcessingException e) {
 				log.error("Uanble to convert response to string - {}", e.getMessage());
 				throw new StravaApplicationRuntimeException(e.getMessage());
