@@ -1,6 +1,5 @@
 package com.gade.gps.strava.config;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.gade.gps.strava.StravaDownstreamRuntimeException;
 import com.gade.gps.strava.client.model.GadeError;
-import com.gade.gps.strava.client.model.GadeFault;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +22,8 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
 	public static final ResponseEntity<Object> catchAllHandler(HttpServletRequest request, Exception ex) {
 		 
 		log.error("EXCEPTION caught : {} - {}", ex.getMessage(), Arrays.toString(ex.getStackTrace()));
-		var errs = new ArrayList<GadeError>();
-		errs.add(new GadeError(ex.getMessage(), "URI=" + request.getRequestURI()));
-		errs.add(new GadeError("Exception '" + ex.getClass().getSimpleName() + "'", null));
-		var fault = new GadeFault("Request failed", errs);
-		return new ResponseEntity<>(fault, HttpStatus.INTERNAL_SERVER_ERROR);
+		var err = new GadeError(String.format("An unexpected error (%s) occurred on call to '%s'", ex.getClass().getSimpleName(), request.getRequestURI()), ex.getMessage());
+		return new ResponseEntity<>(err, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	@ExceptionHandler(StravaDownstreamRuntimeException.class)
 	public static final ResponseEntity<Object> catchAllHandler(StravaDownstreamRuntimeException ex) {
