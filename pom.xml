@@ -305,7 +305,6 @@
 							<generatorName>java</generatorName>
 							<output>${generated-client-directory}</output>
 							<generateApis>true</generateApis>
-							<modelNameMappings>Error=GadeError</modelNameMappings>
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
@@ -333,7 +332,6 @@
 							<generatorName>spring</generatorName>
 							<output>${generated-server-directory}</output>
 							<generateApis>false</generateApis>
-							<modelNameMappings>Error=GadeError</modelNameMappings>
 
 							<configOptions>
 								<serializableModel>true</serializableModel>
@@ -343,6 +341,11 @@
 								<modelPackage>${generated-server-package}.model</modelPackage>
 								<invokerPackage>${generated-server-package}</invokerPackage>
 								<skipOverwrite>true</skipOverwrite>
+								
+								<additionalModelTypeAnnotations>
+									@lombok.NoArgsConstructor
+									@lombok.AllArgsConstructor
+								</additionalModelTypeAnnotations> 
 							</configOptions>
 						</configuration>
 					</execution>

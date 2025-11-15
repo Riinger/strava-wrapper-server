@@ -1,0 +1,32 @@
+{
+	"GadeFault": {
+		"description": "Encapsulates the errors that may be returned from the API.",
+		"type": "object",
+		"properties": {
+			"message": {
+				"type": "string",
+				"description": "The message associated with the fault."
+			},
+			"details": {
+				"type": "array",
+				"items": {
+					"$ref": "gade-fault.json#/GadeError"
+				},
+				"description": "Error messages associated with this fault"
+			}
+		}
+	},
+	"GadeError": {
+		"type": "object",
+		"properties": {
+			"reason": {
+				"description": "Reason for error",
+				"type": "string"
+			},
+			"extraData": {
+				"description": "Extra information",
+				"type": "string"
+			}
+		}
+	}
+}

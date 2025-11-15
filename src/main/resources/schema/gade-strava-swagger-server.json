@@ -35,7 +35,7 @@
 					"default": {
 						"description": "Unexpected error.",
 						"schema": {
-							"$ref": "sub-schema/fault.json#/Fault"
+							"$ref": "sub-schema/gade-fault.json#/GadeFault"
 						}
 					}
 				}
@@ -80,7 +80,7 @@
 					"default": {
 						"description": "Unexpected error.",
 						"schema": {
-							"$ref": "sub-schema/fault.json#/Fault"
+							"$ref": "sub-schema/gade-fault.json#/GadeFault"
 						}
 					}
 				}
