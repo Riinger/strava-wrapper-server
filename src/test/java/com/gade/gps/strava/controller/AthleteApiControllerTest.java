@@ -8,8 +8,10 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.gade.gps.strava.StravaWrapperApplication;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.oauth.StravaToken;
 import com.gade.gps.strava.service.AthleteService;
@@ -27,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest//(classes= {AthleteApiController.class, StravaWrapperApplication.class})
 @AutoConfigureMockMvc
 @Slf4j
+
+@ExtendWith(MockitoExtension.class)
 class AthleteApiControllerTest {
 	
 	@MockitoBean AthleteService service;

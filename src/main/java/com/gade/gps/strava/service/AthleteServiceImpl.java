@@ -1,5 +1,7 @@
 package com.gade.gps.strava.service;
 
+import static com.gade.gps.strava.config.StravaCache.CacheAction.*;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.client.model.SummaryActivity;
 import com.gade.gps.strava.config.StravaCache;
+import com.gade.gps.strava.config.StravaCache.CacheAction;
 import com.gade.gps.strava.mappers.SummaryMapper;
 import com.gade.gps.strava.repository.StravaRepository;
 
@@ -42,16 +45,23 @@ public class AthleteServiceImpl implements AthleteService {
 		throw new StravaApplicationRuntimeException("Cannot get activities from Strava : {}" + response.getStatusCode().value());
 	}
     @Override
-	public List<GadeSummaryActivity> getActivities(Boolean updateCache) {
+	public List<GadeSummaryActivity> getActivities(CacheAction cacheAction) {
+
     	List<SummaryActivity> activities = this.stravaCache.getCachedActivities();
-    	var latestAct = StravaCache.getLatestActivity(activities);
-    	if ( Boolean.TRUE.equals(updateCache) ) {
-	    	Integer after = null;
-	    	if ( latestAct != null ) {
-	    		var startDate = latestAct.getStartDate().toLocalDate().plusDays(1).atStartOfDay();
-	    		log.info("After {}", startDate);
-	    		after = Integer.valueOf((int)OffsetDateTime.of(startDate, ZoneOffset.UTC).toEpochSecond());
+
+    	if ( !cacheAction.equals(NONE) ) {
+	    	Integer after = 0;
+	    	if ( cacheAction.equals(UPDATE)) { 
+	        	var latestAct = StravaCache.getLatestActivity(activities);
+		    	if ( latestAct != null ) {
+		    		var startDate = latestAct.getStartDate().toLocalDate().plusDays(1).atStartOfDay();
+		    		log.info("After {}", startDate);
+		    		after = Integer.valueOf((int)OffsetDateTime.of(startDate, ZoneOffset.UTC).toEpochSecond());
+		    	}
+	    	} else {
+	    		activities = new ArrayList<>();
 	    	}
+    		
 	    	var allRead = false;
 	    	var page = 1;
 	    	while ( !allRead ) {
@@ -68,6 +78,7 @@ public class AthleteServiceImpl implements AthleteService {
 		    				.orElse(new ArrayList<>());
 	    		
 	    			activities.addAll(theseActivities);
+	    			log.info("Strava returned {} activities on page {}", theseActivities.size(), page - 1);
 		    		if ( theseActivities.size() < PAGESIZE ) allRead = true;
 		    	} else {
 		    		log.error("Cannot get activities from Strava : {}", activitiesFromStrava.getStatusCode());
@@ -76,6 +87,8 @@ public class AthleteServiceImpl implements AthleteService {
 	    	}
 			stravaCache.update(activities);
     	}
+    	var a = SummaryMapper.mapToGadeList(activities);
+    	log.info("{} activities returned", a.size());
 		return SummaryMapper.mapToGadeList(activities);
 
 	}

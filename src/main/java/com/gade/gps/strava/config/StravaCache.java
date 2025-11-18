@@ -12,7 +12,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.SummaryActivity;
+import com.gade.gps.strava.utils.StravaHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,11 +24,27 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class StravaCache implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+
+	public enum CacheAction {
+		NONE,
+		UPDATE,
+		REFRESH;
+
+		public static CacheAction fromValue(String value) {
+			for ( var op : CacheAction.values() ) {
+				if ( op.toString().equalsIgnoreCase(value) ) return op;
+			}
+			throw new IllegalArgumentException("Unknown cache operation '" + value + "'");
+		}
+	}
 
 	private transient StravaAppProperties stravaProperties;
+	final ObjectMapper objectMapper;
 
-    StravaCache(StravaAppProperties stravaProperties) {
+    StravaCache(StravaAppProperties stravaProperties, ObjectMapper objectMapper) {
         this.stravaProperties = stravaProperties;
+        this.objectMapper = objectMapper;
     }
 
 	@SuppressWarnings("unchecked")
@@ -32,20 +52,42 @@ public class StravaCache implements Serializable {
 	{
 		List<SummaryActivity> result = null;
 
-	      try (FileInputStream fileIn = new FileInputStream(stravaProperties.getCache().getPath());
-				ObjectInputStream in = new ObjectInputStream(fileIn))
-	      {
-	         result = (List<SummaryActivity>) in.readObject();
-	         log.info("Data successfully read from cache");
-	      }
-	      catch ( Exception  e )
-	      {
-	         log.warn("Error reading cache, will refresh data. Error [{}]", e.getMessage());
-	         result = new ArrayList<>();
-	      }
+		try (FileInputStream fileIn = new FileInputStream(stravaProperties.getCache().getPath());
+				ObjectInputStream in = new ObjectInputStream(fileIn)) {
+			result = (List<SummaryActivity>) in.readObject();
+			log.info("Data successfully read from cache");
+		} catch (Exception e) {
+			log.warn("Error reading cache, will refresh data. Error [{}]", e.getMessage());
+			result = new ArrayList<>();
+		}
 		return result;
 	}
-
+	public void archiveCachedActivities(Integer pageSize) {
+		var activities = getCachedActivities();
+		log.info("cachedActivities returns {}", activities == null ? "null" : "non-null");
+		if ( activities == null || pageSize < 1 ) return;
+		log.info("{} cached activities", activities.size());
+		
+		log.info("Object Mapper {}", objectMapper.toString());
+		log.info("ArchiveConfig {}", stravaProperties.getArchive());
+		
+		var page = 1;
+		
+		for ( var startIndex = 0 ; startIndex < activities.size() ; startIndex += pageSize, page++ ) {
+			var thisPageSize = activities.size() - startIndex >= pageSize ? pageSize : activities.size() - startIndex;
+			log.info("SubList for page {} has {} items from start index {}", page, thisPageSize, startIndex);
+			log.info("Get sublist from {} to {}", startIndex, startIndex + thisPageSize);
+			var subList = activities.subList(startIndex, startIndex + thisPageSize);
+		
+			try {
+				log.info("sublist = {} -> {}", objectMapper.writeValueAsString(subList));
+				StravaHelper.archiveResponse(String.format("getLoggedInAthleteActivities.%03d.%012d", page, 0), objectMapper.writeValueAsString(subList), stravaProperties.getArchive().getDirectory());
+			} catch (JsonProcessingException e) {
+				log.error("Unable to convert response to string - {}", e.getMessage());
+				throw new StravaApplicationRuntimeException(e.getMessage());
+			}
+		}
+	}
 	public static SummaryActivity getLatestActivity(final List<SummaryActivity> activities) {
 		SummaryActivity latestActivity = null;
 		if (activities != null) {
@@ -76,4 +118,6 @@ public class StravaCache implements Serializable {
 			e.printStackTrace();			
 		}
 	}
+
+
 }

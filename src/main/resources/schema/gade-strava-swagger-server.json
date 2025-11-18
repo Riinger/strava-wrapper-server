@@ -13,12 +13,53 @@
 	"produces": [
 		"application/json"
 	],
-	"paths": {
+	"parameters": {
+		"page": {
+			"name": "page",
+			"in": "query",
+			"description": "Page number. Defaults to 1.",
+			"type": "integer"
+		},
+		"perPage": {
+			"name": "per_page",
+			"in": "query",
+			"description": "Number of items per page. Defaults to 30.",
+			"type": "integer",
+			"default": 30
+		},
+		"cacheAction": {
+			"name": "cache_action",
+			"in": "query",
+			"description": "Cache Action",
+			"type": "string",
+			"enum": ["none", "update", "renew"],
+			"default": "none"
+		}
+		
+	},	"paths": {
 		"/gade/activities": {
 			"get": {
 				"operationId": "getActivities",
 				"summary": "List Activities",
 				"description": "Returns the activities",
+				"parameters": [
+				  {
+					"$ref": "#/parameters/cacheAction"
+				  },
+				  {
+				    "name": "after",
+				    "in": "query",
+				    "description": "An epoch timestamp to use for filtering activities that have taken place after a certain time.",
+				    "type": "integer"
+				  },
+				  {
+				    "$ref": "#/parameters/page"
+				  },
+				  {
+				    "$ref": "#/parameters/perPage"
+				  }
+				],
+
 				"tags": [
 					"Activities"
 				],

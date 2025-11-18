@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
+import com.gade.gps.strava.config.StravaCache;
 import com.gade.gps.strava.service.AthleteService;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,7 +49,8 @@ public class AthleteApiController {
     )
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<GadeSummaryActivity>> getActivities(
-    		@RequestParam(name = "update_cache", required = false, defaultValue = "true") Boolean updateCache) {
-			return ResponseEntity.ok(service.getActivities(updateCache).subList(0, 2)); // TODO - want request parameters to specifiy filters
+    		@Parameter(name = "cache_action", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "none") String cacheAction
+	) {
+			return ResponseEntity.ok(service.getActivities(StravaCache.CacheAction.fromValue(cacheAction))); // TODO - want request parameters to specify filters
     }
 }

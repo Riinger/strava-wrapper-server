@@ -3,14 +3,17 @@ package com.gade.gps.strava.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.gade.gps.strava.config.StravaCache;
+import com.gade.gps.strava.config.StravaCache.CacheAction;
 import com.gade.gps.strava.repository.StravaRepository;
 import com.gade.gps.strava.utils.TestHelper;
 
@@ -18,7 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest//(classes= {AthleteServiceImpl.class, StravaWrapperApplication.class})
 //@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 @Slf4j
+
 class AthleteServiceImplTest {
 	@Autowired AthleteService service;
 	
@@ -40,7 +45,7 @@ class AthleteServiceImplTest {
 		Mockito.when(stravaRepository.getLoggedInAthleteActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponseEntity);
 		Mockito.when(stravaCache.getCachedActivities()).thenReturn(mockedCacheResponse);
 
-		var response = service.getActivities(null);
+		var response = service.getActivities(CacheAction.UPDATE);
 		assertEquals(4, response.size());
 	}
 }
