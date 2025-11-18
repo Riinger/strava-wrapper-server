@@ -21,7 +21,6 @@ public abstract class StravaHelper {
 		return new GadeFault(msg, List.of(new GadeError(reason, extraData)));
 	}
     public static void archiveResponse(String filename, String content, String archiveDirectory) {
-		// Write response to <page>.<lastActivityDate>.arc
 		var archivePath = Paths.get(archiveDirectory, filename + ARCHIVE_FILE_EXT);
 		log.info("Archive to file {}", archivePath.toString());
 		try {

@@ -67,7 +67,7 @@ public class StravaCache implements Serializable {
 		var activities = getCachedActivities();
 		log.debug("cachedActivities returns {}", activities == null ? "null" : "non-null");
 		if ( activities == null || pageSize < 1 ) return;
-		log.debug("{} cached activities", activities.size());
+		log.info("Archiving {} cached activities", activities.size());
 		
 		var page = 1;
 		
