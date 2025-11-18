@@ -30,6 +30,7 @@ public abstract class StravaHelper {
 			log.warn("Unable to create archive file - {}", ioe.getMessage());
 		}
     }
+
 	private StravaHelper() {
 		// Hide constructor
 	}

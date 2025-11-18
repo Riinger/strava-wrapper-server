@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.SummaryActivity;
+import com.gade.gps.strava.service.AthleteService;
 import com.gade.gps.strava.utils.StravaHelper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -64,24 +65,21 @@ public class StravaCache implements Serializable {
 	}
 	public void archiveCachedActivities(Integer pageSize) {
 		var activities = getCachedActivities();
-		log.info("cachedActivities returns {}", activities == null ? "null" : "non-null");
+		log.debug("cachedActivities returns {}", activities == null ? "null" : "non-null");
 		if ( activities == null || pageSize < 1 ) return;
-		log.info("{} cached activities", activities.size());
-		
-		log.info("Object Mapper {}", objectMapper.toString());
-		log.info("ArchiveConfig {}", stravaProperties.getArchive());
+		log.debug("{} cached activities", activities.size());
 		
 		var page = 1;
 		
 		for ( var startIndex = 0 ; startIndex < activities.size() ; startIndex += pageSize, page++ ) {
 			var thisPageSize = activities.size() - startIndex >= pageSize ? pageSize : activities.size() - startIndex;
-			log.info("SubList for page {} has {} items from start index {}", page, thisPageSize, startIndex);
-			log.info("Get sublist from {} to {}", startIndex, startIndex + thisPageSize);
+			log.debug("SubList for page {} has {} items from start index {}", page, thisPageSize, startIndex);
+			log.debug("Get sublist from {} to {}", startIndex, startIndex + thisPageSize);
 			var subList = activities.subList(startIndex, startIndex + thisPageSize);
 		
 			try {
-				log.info("sublist = {} -> {}", objectMapper.writeValueAsString(subList));
-				StravaHelper.archiveResponse(String.format("getLoggedInAthleteActivities.%03d.%012d", page, 0), objectMapper.writeValueAsString(subList), stravaProperties.getArchive().getDirectory());
+				log.debug("sublist = {} -> {}", objectMapper.writeValueAsString(subList));
+				StravaHelper.archiveResponse(AthleteService.getActivitiesArchiveFilename(page, pageSize), objectMapper.writeValueAsString(subList), stravaProperties.getArchive().getDirectory());
 			} catch (JsonProcessingException e) {
 				log.error("Unable to convert response to string - {}", e.getMessage());
 				throw new StravaApplicationRuntimeException(e.getMessage());

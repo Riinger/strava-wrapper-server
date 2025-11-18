@@ -80,7 +80,7 @@ class StravaCacheTest {
 			try ( var helperMocker = mockStatic(StravaHelper.class) ) {
 				helperMocker.when(() -> StravaHelper.archiveResponse(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenAnswer((Answer<Void>) inv -> {
 					fileCount++;
-					assertEquals(String.format("getLoggedInAthleteActivities.%03d.000000000000", fileCount), inv.getArgument(0)); 
+					assertEquals(String.format("getLoggedInAthleteActivities.%03d.%04d", fileCount, td.pageSize), inv.getArgument(0)); 
 					log.info("Test : Archive file name matches {}", inv.getArgument(0).toString());
 					return (Void)null;
 				});

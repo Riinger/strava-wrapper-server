@@ -92,4 +92,7 @@ public class AthleteServiceImpl implements AthleteService {
 		return SummaryMapper.mapToGadeList(activities);
 
 	}
+//    public static String getActivitiesArchiveFilename(int page, int pageSize) {
+//    	return String.format("getLoggedInAthleteActivities.%03d.%04d", page, pageSize);
+//    }
 }
