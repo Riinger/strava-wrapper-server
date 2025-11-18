@@ -4,16 +4,10 @@ import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
 
 import com.fasterxml.jackson.databind.Module;
 
 @SpringBootApplication
-//@ComponentScan(
-//	    basePackages = {"com.gade.gps.strava.client", "com.gade.gps.strava.client.api" , "org.openapitools.configuration"},
-//	    nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
-//	)
 public class StravaWrapperApplication {
 
     public static void main(String[] args) {

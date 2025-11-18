@@ -19,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.gade.gps.strava.StravaWrapperApplication;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.oauth.StravaToken;
 import com.gade.gps.strava.service.AthleteService;

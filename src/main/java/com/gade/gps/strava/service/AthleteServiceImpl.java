@@ -1,6 +1,7 @@
 package com.gade.gps.strava.service;
 
-import static com.gade.gps.strava.config.StravaCache.CacheAction.*;
+import static com.gade.gps.strava.config.StravaCache.CacheAction.NONE;
+import static com.gade.gps.strava.config.StravaCache.CacheAction.UPDATE;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -92,7 +93,4 @@ public class AthleteServiceImpl implements AthleteService {
 		return SummaryMapper.mapToGadeList(activities);
 
 	}
-//    public static String getActivitiesArchiveFilename(int page, int pageSize) {
-//    	return String.format("getLoggedInAthleteActivities.%03d.%04d", page, pageSize);
-//    }
 }

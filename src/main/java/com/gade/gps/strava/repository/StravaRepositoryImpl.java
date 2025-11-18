@@ -13,7 +13,6 @@ import com.gade.gps.strava.client.api.ActivitiesApi;
 import com.gade.gps.strava.client.api.GearsApi;
 import com.gade.gps.strava.client.model.DetailedGear;
 import com.gade.gps.strava.client.model.SummaryActivity;
-import com.gade.gps.strava.config.ExceptionHandlerAdvice;
 import com.gade.gps.strava.config.StravaAppProperties;
 import com.gade.gps.strava.service.AthleteService;
 import com.gade.gps.strava.utils.StravaHelper;
@@ -25,17 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StravaRepositoryImpl implements StravaRepository {
 
-    private final ExceptionHandlerAdvice exceptionHandlerAdvice;
-
 	final RepositoryHelper helper;
 	final StravaAppProperties stravaProperties;
 	final ObjectMapper objectMapper;
 
-    StravaRepositoryImpl(RepositoryHelper helper, StravaAppProperties stravaProperties, ObjectMapper objectMapper, ExceptionHandlerAdvice exceptionHandlerAdvice) {
+    StravaRepositoryImpl(RepositoryHelper helper, StravaAppProperties stravaProperties, ObjectMapper objectMapper) {
         this.helper = helper;
         this.stravaProperties = stravaProperties;
         this.objectMapper = objectMapper;
-        this.exceptionHandlerAdvice = exceptionHandlerAdvice;
     }
     @PostConstruct
     void initArchive() {
@@ -73,8 +69,4 @@ public class StravaRepositoryImpl implements StravaRepository {
 		}
         return ResponseEntity.ok(result);
     }
-
-//    private String offsetDateTimeToString(OffsetDateTime odt) {
-//    	return DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(odt);
-//    }
 }

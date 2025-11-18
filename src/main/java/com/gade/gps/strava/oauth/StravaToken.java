@@ -20,7 +20,7 @@ import lombok.Data;
 @Component
 @Data
 public class StravaToken {
-	@Autowired StravaAppProperties stravaProperties;
+	@Autowired StravaAppProperties stravaProperties; // Attempts to inject via constructor seem to fail ? 
 
 	@JsonAlias("token_type")
 	private String tokenType;
