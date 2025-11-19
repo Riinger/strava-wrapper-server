@@ -55,7 +55,7 @@ public class AthleteServiceImpl implements AthleteService {
 	    	if ( cacheAction.equals(UPDATE)) { 
 	        	var latestAct = StravaCache.getLatestActivity(activities);
 		    	if ( latestAct != null ) {
-		    		var startDate = latestAct.getStartDate().toLocalDate().plusDays(1).atStartOfDay();
+		    		var startDate = latestAct.getStartDate().toLocalDateTime();
 		    		log.info("After {}", startDate);
 		    		after = Integer.valueOf((int)OffsetDateTime.of(startDate, ZoneOffset.UTC).toEpochSecond());
 		    	}
