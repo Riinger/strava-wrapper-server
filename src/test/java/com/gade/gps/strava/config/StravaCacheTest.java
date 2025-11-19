@@ -32,23 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class StravaCacheTest {
 	
-	@AllArgsConstructor
-	@Getter
-	static class TestData {
-		private int pageSize;
-		private int expectedPages;
-	}
-	
-	// 32 activities in cache
-	private static final List<TestData> testData = List.of(
-			new TestData(0, 0),
-			new TestData(12, 3),
-			new TestData(32, 1),
-			new TestData(31, 2),
-			new TestData(16, 2),
-			new TestData(15, 3),
-			new TestData(3, 11)
-			);
+	record TestData(int pageSize, int expectedPages) {}
 	
 	@Autowired ObjectMapper objectMapper;
 	@Autowired StravaAppProperties stravaProperties;
@@ -76,11 +60,22 @@ class StravaCacheTest {
 	}
 	@Test
 	void testListOfScenarios() {
+		// 32 activities in cache
+		var testData = new  TestData[] {
+				new TestData(0, 0),
+				new TestData(12, 3),
+				new TestData(32, 1),
+				new TestData(31, 2),
+				new TestData(16, 2),
+				new TestData(15, 3),
+				new TestData(3, 11)
+		};
+		
 		for ( var td : testData ) {
 			try ( var helperMocker = mockStatic(StravaHelper.class) ) {
 				helperMocker.when(() -> StravaHelper.archiveResponse(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenAnswer((Answer<Void>) inv -> {
 					fileCount++;
-					assertEquals(String.format("getLoggedInAthleteActivities.%03d.%04d", fileCount, td.pageSize), inv.getArgument(0)); 
+					assertEquals(String.format("getLoggedInAthleteActivities.%03d.%03d.nnnnnnnnnnnn.nnnnnnnnnnnn", fileCount, td.pageSize), inv.getArgument(0)); 
 					log.info("Test : Archive file name matches {}", inv.getArgument(0).toString());
 					return (Void)null;
 				});
