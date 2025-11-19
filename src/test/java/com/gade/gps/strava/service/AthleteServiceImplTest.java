@@ -20,7 +20,6 @@ import com.gade.gps.strava.utils.TestHelper;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest//(classes= {AthleteServiceImpl.class, StravaWrapperApplication.class})
-//@AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 
@@ -47,5 +46,27 @@ class AthleteServiceImplTest {
 
 		var response = service.getActivities(CacheAction.UPDATE);
 		assertEquals(4, response.size());
+	}
+	@Test
+	void test_archiveFilenames() {
+		final String baseName = "getLoggedInAthleteActivities";
+		record TestData (Integer page, Integer pageSize, Integer after, Integer before, String expectedSuffix) {}
+		var testCases = new TestData[] {
+				new TestData(null, null, null, null, ".nnn.nnn.nnnnnnnnnnnn.nnnnnnnnnnnn"),
+				new TestData(1, null, null, null, ".001.nnn.nnnnnnnnnnnn.nnnnnnnnnnnn"),
+				new TestData(null, 10, null, null, ".nnn.010.nnnnnnnnnnnn.nnnnnnnnnnnn"),
+				new TestData(null, null, 100, null, ".nnn.nnn.000000000100.nnnnnnnnnnnn"),
+				new TestData(null, null, null, 2000, ".nnn.nnn.nnnnnnnnnnnn.000000002000"),
+				new TestData(1, null, 123, null, ".001.nnn.000000000123.nnnnnnnnnnnn"),
+				new TestData(1, null, null, 2345, ".001.nnn.nnnnnnnnnnnn.000000002345"),
+				new TestData(1, 20, null, 2345, ".001.020.nnnnnnnnnnnn.000000002345"),
+				new TestData(null, 20, null, 2345, ".nnn.020.nnnnnnnnnnnn.000000002345"),
+				new TestData(null, null, 300, 2345, ".nnn.nnn.000000000300.000000002345"),
+				new TestData(1, 20, 789, 2345, ".001.020.000000000789.000000002345"),
+		};
+		
+		for ( var tc : testCases ) {
+			assertEquals(baseName + tc.expectedSuffix(), AthleteService.getActivitiesArchiveFilename(tc.page, tc.pageSize, tc.after, tc.before));			
+		}
 	}
 }

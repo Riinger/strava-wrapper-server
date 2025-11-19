@@ -79,7 +79,7 @@ public class StravaCache implements Serializable {
 		
 			try {
 				log.debug("sublist = {} -> {}", objectMapper.writeValueAsString(subList));
-				StravaHelper.archiveResponse(AthleteService.getActivitiesArchiveFilename(page, pageSize), objectMapper.writeValueAsString(subList), stravaProperties.getArchive().getDirectory());
+				StravaHelper.archiveResponse(AthleteService.getActivitiesArchiveFilename(page, pageSize, null, null), objectMapper.writeValueAsString(subList), stravaProperties.getArchive().getDirectory());
 			} catch (JsonProcessingException e) {
 				log.error("Unable to convert response to string - {}", e.getMessage());
 				throw new StravaApplicationRuntimeException(e.getMessage());

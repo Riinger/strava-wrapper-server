@@ -3,7 +3,8 @@ Server Wrapper to Strava API
 
 # TODO
 - Simulator responses for activities API
-    - Gather responses (archive mechanism)
+    - ~Gather responses (archive mechanism)~
+    - Need to include before and after in archive file name (else files overwritten)
     - Add to simulator
 - Error codes currently hard-coded
 - gear vs gears

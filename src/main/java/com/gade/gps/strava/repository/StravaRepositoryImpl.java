@@ -46,7 +46,7 @@ public class StravaRepositoryImpl implements StravaRepository {
         var result = apiInstance.getLoggedInAthleteActivities(before, after, page, pageSize);
 		if ( Boolean.TRUE.equals(stravaProperties.getArchive().getEnabled()) ) {
 			try {
-				StravaHelper.archiveResponse(AthleteService.getActivitiesArchiveFilename(page, pageSize), objectMapper.writeValueAsString(result), stravaProperties.getArchive().getDirectory());
+				StravaHelper.archiveResponse(AthleteService.getActivitiesArchiveFilename(page, pageSize, after, before), objectMapper.writeValueAsString(result), stravaProperties.getArchive().getDirectory());
 			} catch (JsonProcessingException e) {
 				log.error("Unable to convert response to string - {}", e.getMessage());
 				throw new StravaApplicationRuntimeException(e.getMessage());

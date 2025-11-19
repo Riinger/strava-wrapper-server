@@ -9,7 +9,18 @@ public interface AthleteService {
     public List<GadeSummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize);
     public List<GadeSummaryActivity> getActivities(CacheAction cacheAction);
     
-    public static String getActivitiesArchiveFilename(int page, int pageSize) {
-    	return String.format("getLoggedInAthleteActivities.%03d.%04d", page, pageSize);
+    public static String getActivitiesArchiveFilename(Integer page, Integer pageSize, Integer after, Integer before) {
+    	return String.format("getLoggedInAthleteActivities%s%s%s%s", 
+    			integerToStringComponent(page, 3), 
+    			integerToStringComponent(pageSize, 3),
+    			integerToStringComponent(after, 12),
+    			integerToStringComponent(before, 12));
+    }
+    private static String integerToStringComponent(Integer i, int length) {
+    	if ( i != null ) {
+    	var format = ".%0" + length + "d";
+    		return String.format(format, i); 
+    	}
+		return "." + "n".repeat(length);
     }
 }
