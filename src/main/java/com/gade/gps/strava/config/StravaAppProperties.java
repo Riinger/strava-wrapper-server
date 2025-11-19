@@ -1,5 +1,7 @@
 package com.gade.gps.strava.config;
 
+import java.util.Map;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,9 +31,14 @@ public class StravaAppProperties {
 		private String grantType;
 		private Integer expiryBuffer = 5; // minutes
 	}
+	@Data
+	public static class GearConfig {
+		private String name;
+		private String description;
+	}
 	
 	private ArchiveConfig archive;
 	private CacheConfig cache;
 	private AuthConfig auth;
-	
+	private Map<String, GearConfig> gear;
 }

@@ -30,17 +30,19 @@ public class AthleteServiceImpl implements AthleteService {
 
     final StravaRepository stravaRepository;
     final StravaCache stravaCache;
+    final SummaryMapper mapper;
     
-    public AthleteServiceImpl(StravaRepository stravaRepository, StravaCache stravaCache) {
+    public AthleteServiceImpl(StravaRepository stravaRepository, StravaCache stravaCache, SummaryMapper mapper) {
     	this.stravaRepository = stravaRepository;
     	this.stravaCache = stravaCache;
+    	this.mapper = mapper;
     }
 
     @Override
 	public List<GadeSummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) {
 		var response = stravaRepository.getLoggedInAthleteActivities(before, after, page, pageSize);
 		if ( response.getStatusCode() == HttpStatus.OK ) {
-			return SummaryMapper.mapToGadeList(response.getBody());
+			return mapper.mapToGadeList(response.getBody());
 		}
 		log.error("Unable to get activities - {} - {}", response.getStatusCode(), response.getBody());
 		throw new StravaApplicationRuntimeException("Cannot get activities from Strava : {}" + response.getStatusCode().value());
@@ -88,9 +90,9 @@ public class AthleteServiceImpl implements AthleteService {
 	    	}
 			stravaCache.update(activities);
     	}
-    	var a = SummaryMapper.mapToGadeList(activities);
+    	var a = mapper.mapToGadeList(activities);
     	log.info("{} activities returned", a.size());
-		return SummaryMapper.mapToGadeList(activities);
+		return mapper.mapToGadeList(activities);
 
 	}
 }

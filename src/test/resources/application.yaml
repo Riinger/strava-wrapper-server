@@ -25,3 +25,70 @@ strava:
     client-secret: 0000
     grant-type: refresh_token
     expiry-buffer: 180
+  gear:
+    b11683313: 
+      name: SA
+      description: 
+    b4500048: 
+      name: H
+      description: 
+    b4500063: 
+      name: F
+      description: 
+    b4500064: 
+      name: T
+      description: 
+    b4500067: 
+      name: R
+      description: 
+    b4523173: 
+      name: S
+      description: 
+    b8592474: 
+      name: Turbo
+      description: 
+    g11857474: 
+      name: North Face Vectiv Enduris Futurelight Black winter waterproof trail shoes
+      description: Size 12
+    g12605013: 
+      name: HOKA Speedgoat 5 Hoka trail shoes
+      description: Wide fit
+    g18691255: 
+      name: Brooks Ghost 14 Grey Ghost
+      description: 
+    g1957718: 
+      name: ASICS Trounce 7
+      description: 
+    g1973186: 
+      name: Adidas Indoor Football
+      description: 
+    g20117216: 
+      name: ASICS GEL-PULSE 15 GTX Waterproof road shoes (2024)
+      description: 
+    g3774380: 
+      name: Brooks Revel
+      description: 
+    g4019355: 
+      name: ASICS Trainer DS 18 General Road Shoes
+      description: 
+    g4609397: 
+      name: Saucony Freedom iso 2 White Summer Road Shoes
+      description: 
+    g6528683: 
+      name: Saucony Peregrine Summer Trail shoes
+      description: 
+    g6989782: 
+      name: Saucony Peregrine 8 (GTX) Winter Trail Shoes
+      description: 
+    g7267664: 
+      name: ASICS GEL-PULSE 11 Winter Road Shoes
+      description: 
+    g8081432: 
+      name: ASICS Gel Cumulus 22 Blue Summer Running Shoes
+      description: 
+    g8560275: 
+      name: Brooks Ghost 12
+      description: Wide fit
+    g8878586: 
+      name: HOKA Clifton 7
+      description: 

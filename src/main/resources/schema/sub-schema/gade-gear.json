@@ -1,0 +1,22 @@
+{
+	"GadeDetailedGear": {
+		"allOf": [
+			{
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The gear's unique identifier."
+					},
+					"name": {
+						"type": "string",
+						"description": "The gear's name."
+					},
+					"description": {
+						"type": "string",
+						"description": "The gear's description."
+					}
+				}
+			}
+		]
+	}
+}

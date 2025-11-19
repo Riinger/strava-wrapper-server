@@ -62,8 +62,7 @@
             "description": "The activity's workout type"
           },
           "gear": {
-            "type": "string",
-            "description": "The gear used for the activity"
+			"$ref": "gade-gear.json#/GadeDetailedGear"
           },
           "kilojoules": {
             "type": "number",

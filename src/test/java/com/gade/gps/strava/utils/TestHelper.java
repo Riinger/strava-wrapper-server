@@ -8,17 +8,22 @@ import java.util.Random;
 
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.client.model.SummaryActivity;
-import com.gade.gps.strava.mappers.SummaryMapper;
 
 public class TestHelper {
 	public static GadeSummaryActivity createGadeSummaryActivity(float distance, OffsetDateTime startTime, Integer elapsedTime, Long id) {
-		return SummaryMapper.mapToGade(createSummaryActivity(distance, startTime, elapsedTime, id));
+		var gsa = new GadeSummaryActivity();
+		gsa.setDistance(distance);
+		gsa.setStartDate(startTime);
+		gsa.setElapsedTime(elapsedTime);
+		gsa.setId(id);
+		return gsa;
 	}
 	public static List<GadeSummaryActivity> createRandomGadeSummaryActivityList(int count) {
-		return SummaryMapper.mapToGadeList(createRandomSummaryActivityList(count));
-	}	
-	public static GadeSummaryActivity createRandomGadeSummaryActivity() {
-		return SummaryMapper.mapToGade(createRandomSummaryActivity());
+		List<GadeSummaryActivity> summaryList = new ArrayList<>();
+		for ( var i = 0 ; i < count ; i++ ) {
+			summaryList.add(createRandomGadeSummaryActivity());
+		}
+		return summaryList;
 	}	
 	public static SummaryActivity createSummaryActivity(float distance, OffsetDateTime startTime, Integer elapsedTime, Long id) {
 		var sa = new SummaryActivity();
@@ -44,6 +49,16 @@ public class TestHelper {
 		sa.setElapsedTime(elapsedTime);
 		sa.setId((long)randomInt(1001, 10000));
 		return sa;
+	}
+	public static GadeSummaryActivity createRandomGadeSummaryActivity() {
+		var gsa = new GadeSummaryActivity();
+		var avSpeed = 16.5;
+		var elapsedTime = randomInt(600, 3600 * 6);
+		gsa.setDistance((float)(elapsedTime / 24 * avSpeed));
+		gsa.setStartDate(randomDate());
+		gsa.setElapsedTime(elapsedTime);
+		gsa.setId((long)randomInt(1001, 10000));
+		return gsa;
 	}
 	private static OffsetDateTime randomDate() {
 		return OffsetDateTime.of(randomInt(2022, 2025), randomInt(1, 12), randomInt(1, 28), randomInt(0, 23), randomInt(0, 59), randomInt(0, 59), randomInt(0, 999), ZoneOffset.ofHours(0));

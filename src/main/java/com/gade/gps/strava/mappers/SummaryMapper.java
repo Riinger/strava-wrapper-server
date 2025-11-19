@@ -1,13 +1,26 @@
 package com.gade.gps.strava.mappers;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
+import com.gade.gps.strava.client.model.GadeDetailedGear;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.client.model.SummaryActivity;
+import com.gade.gps.strava.config.StravaAppProperties;
 
-public abstract class SummaryMapper {
+@Component
+public class SummaryMapper {
 
-	public static GadeSummaryActivity mapToGade(SummaryActivity sa) {
+	final StravaAppProperties stravaProperties;
+	
+	public SummaryMapper(StravaAppProperties stravaProperties) {
+        this.stravaProperties = stravaProperties;
+		// Hide constructor
+    }
+
+	public GadeSummaryActivity mapToGade(SummaryActivity sa) {
 		var gsa = new GadeSummaryActivity();
 		
 		gsa.setActivityCount(1);
@@ -20,7 +33,16 @@ public abstract class SummaryMapper {
 		gsa.setElapsedTime(sa.getElapsedTime());
 //		gsa.setElevHigh(sa.getElevHigh());
 		gsa.setEndLatlng(sa.getEndLatlng().isEmpty() ? null : sa.getEndLatlng());
-		gsa.setGear(sa.getGearId());
+		
+		var gear = new GadeDetailedGear();
+		gear.setId(sa.getGearId());
+		var gearData = Optional.ofNullable(stravaProperties.getGear()).map(m -> m.get(sa.getGearId())).orElse(null);
+		if ( gearData != null ) {
+			gear.setName(gearData.getName());
+			gear.setDescription(gearData.getDescription());
+		}
+		gsa.setGear(gear);
+		
 		gsa.setId(sa.getId());
 		gsa.setKilojoules(sa.getKilojoules());
 		gsa.setMovingTime(sa.getMovingTime());
@@ -34,10 +56,7 @@ public abstract class SummaryMapper {
 		
 		return gsa;
 	}
-	public static List<GadeSummaryActivity> mapToGadeList(List<SummaryActivity> saList) {
+	public List<GadeSummaryActivity> mapToGadeList(List<SummaryActivity> saList) {
 		return saList.stream().map(sa -> mapToGade(sa)).toList();
-	}
-	private SummaryMapper() {
-		// Hide constructor
 	}
 }
