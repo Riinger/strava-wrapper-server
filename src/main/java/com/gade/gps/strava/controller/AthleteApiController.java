@@ -37,7 +37,7 @@ public class AthleteApiController {
         @Parameter(name = "before", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer before,
         @Parameter(name = "after", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer after,
         @Parameter(name = "page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer page,
-        @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "30") Integer perPage
+        @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(value = "per_page", required = false, defaultValue = "30") Integer perPage
     ) {
 	
 		return ResponseEntity.ok(service.getActivities(before, after, page, perPage));
