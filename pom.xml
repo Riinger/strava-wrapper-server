@@ -246,9 +246,7 @@
                 <version>${jacoco.version}</version>
 				<configuration>
 					<excludes>
-						<exclude>**.client,model.*</exclude>
-						<exclude>**/client/model/**</exclude>
-						<exclude>**.client.auth</exclude>
+						<exclude>**/client/**</exclude>
 					</excludes>
 				</configuration>
                 <executions>

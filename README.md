@@ -10,7 +10,10 @@ Server Wrapper to Strava API
 - ~gear vs gears~
 - ~Pass CORRID to sim and use in logging~
 - ~Global API Client~
-- Use gear API to populate cache for use on activities API (GadeSummaryActivity should return gear string)
+- ~Use gear API to populate cache for use on activities API (GadeSummaryActivity should return gear string)~
+- Add date filters from existing project
+- Grouping
+- Splits
 - Detailed Activity
 - Test coverage
 - README
