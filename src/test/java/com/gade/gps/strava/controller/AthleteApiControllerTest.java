@@ -18,9 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
-import com.gade.gps.strava.oauth.StravaToken;
 import com.gade.gps.strava.service.AthleteService;
 import com.gade.gps.strava.utils.TestHelper;
 
@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 class AthleteApiControllerTest {
 	
 	@MockitoBean AthleteService service;
-	@MockitoBean StravaToken token;
+	@MockitoBean RestTemplate mockedRestTemplate;
 	
 	@Autowired AthleteApiController controller;
 	@Autowired MockMvc mockMvc;

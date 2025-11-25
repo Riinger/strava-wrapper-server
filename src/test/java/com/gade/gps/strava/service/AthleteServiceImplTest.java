@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.web.client.RestTemplate;
 
 import com.gade.gps.strava.config.StravaCache;
 import com.gade.gps.strava.config.StravaCache.CacheAction;
@@ -28,6 +29,7 @@ class AthleteServiceImplTest {
 	
 	@MockitoBean StravaRepository stravaRepository;
 	@MockitoBean StravaCache stravaCache;
+	@MockitoBean RestTemplate mockedRestTemplate;
 
 	@Test
 	void test_getLoggedInAthleteActivities() {

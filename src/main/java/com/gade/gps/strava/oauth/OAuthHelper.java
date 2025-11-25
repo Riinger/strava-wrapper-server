@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,10 +36,12 @@ public class OAuthHelper {
 	
 	final StravaAppProperties stravaProperties;
 	final StravaToken token;
+	final RestTemplate restTemplate;
 
-    OAuthHelper(StravaAppProperties stravaProperties, StravaToken token) {
+    OAuthHelper(StravaAppProperties stravaProperties, StravaToken token, RestTemplate restTemplate) {
         this.stravaProperties = stravaProperties;
         this.token = token;
+        this.restTemplate = restTemplate;
     }
 
 	public String getAccessToken() {
@@ -52,7 +55,7 @@ public class OAuthHelper {
 			return token.getAccessToken();
 		}
 		log.debug("Access token will have expired in the next {} minutes, so refresh", stravaAuth.getExpiryBuffer());
-		var restTemplate = new RestTemplate();
+//		var restTemplate = new RestTemplate();
 		
 		var headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -65,7 +68,6 @@ public class OAuthHelper {
 		formParams.put(PARAM_REFRESH_TOKEN, token.getRefreshToken());
 		
 		HttpEntity<String> request = new HttpEntity<>(urlEncodeUTF8(formParams), headers);
-		
 		var accessTokenUrl = stravaAuth.getHostUrl() + stravaAuth.getOauthtokenUri();
 
 		ResponseEntity<String> response = restTemplate.postForEntity(accessTokenUrl, request, String.class);
@@ -97,11 +99,12 @@ public class OAuthHelper {
     	for (var entry : map.entrySet()) {
 	        if (!sb.isEmpty()) {
 	            sb.append("&");
+	        } else if ( entry.getValue() != null ) {
+		        sb.append(String.format("%s=%s",
+		            urlEncodeUTF8(entry.getKey()),
+		            urlEncodeUTF8(entry.getValue())
+		        ));
 	        }
-	        sb.append(String.format("%s=%s",
-	            urlEncodeUTF8(entry.getKey()),
-	            urlEncodeUTF8(entry.getValue())
-	        ));
     	}
     	return sb.toString();
     }		

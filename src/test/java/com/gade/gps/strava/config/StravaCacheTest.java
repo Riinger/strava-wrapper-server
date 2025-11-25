@@ -15,15 +15,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gade.gps.strava.StravaWrapperApplication;
 import com.gade.gps.strava.config.StravaCache.CacheAction;
 import com.gade.gps.strava.utils.StravaHelper;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootTest
+@SpringBootTest(classes= {StravaCacheTest.class, StravaWrapperApplication.class})
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 class StravaCacheTest {
@@ -32,6 +35,7 @@ class StravaCacheTest {
 	
 	@Autowired ObjectMapper objectMapper;
 	@Autowired StravaAppProperties stravaProperties;
+	@MockitoBean RestTemplate mockedRestTemplate;
 	
 	@InjectMocks StravaCache cache;
 	

@@ -18,7 +18,7 @@ strava:
   cache:
     path: src/test/resources/data/strava-cache-32.ser
   auth:
-    auth-file: src\\main\\resources\\config\\strava-token-local.properties
+    auth-file: src\\test\\resources\\strava-token.properties
     host-url: http://localhost:12319
     oauthtoken-uri: /oauth/token
     client-id: 0000
