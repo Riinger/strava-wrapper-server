@@ -1,6 +1,8 @@
 package com.gade.gps.strava.oauth;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -18,11 +20,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.StravaWrapperApplication;
 import com.gade.gps.strava.config.StravaAppProperties;
 
@@ -69,6 +73,30 @@ class OAuthHelperTest {
 		helper = new OAuthHelper(stravaProperties, token, mockedRestTemplate);
 		var at = helper.getAccessToken();
 		assertEquals("test-access-token", at);
+	}
+	@Test
+	void testInvalidNewAccessTokenNotJson() {
+		var mockedResponse = ResponseEntity.ok("Not JSON");
+		when(mockedRestTemplate.postForEntity(anyString(), any(), eq(String.class)))
+			.thenReturn(mockedResponse);
+		token = createToken(1212121212L);
+		helper = new OAuthHelper(stravaProperties, token, mockedRestTemplate);
+		
+		var sare = assertThrows(StravaApplicationRuntimeException.class, () -> helper.getAccessToken());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, sare.getHttpStatus());
+		assertTrue(sare.getMessage().startsWith("Access Token error : JsonParseException"));
+	}
+	@Test
+	void testInvalidNewAccessToken() {
+		var mockedResponse = ResponseEntity.ok("{ \"token\":\"fred\"}");
+		when(mockedRestTemplate.postForEntity(anyString(), any(), eq(String.class)))
+			.thenReturn(mockedResponse);
+		token = createToken(1212121212L);
+		helper = new OAuthHelper(stravaProperties, token, mockedRestTemplate);
+		
+		var sare = assertThrows(StravaApplicationRuntimeException.class, () -> helper.getAccessToken());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, sare.getHttpStatus());
+		assertTrue(sare.getMessage().startsWith("Access Token error : UnrecognizedPropertyException"));
 	}
 
 	private StravaToken createToken(long expiresAt) {
