@@ -4,6 +4,7 @@ import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.Module;
 
@@ -19,4 +20,13 @@ public class StravaWrapperApplication {
         return new JsonNullableModule();
     }
 
+
+//@Configuration
+//public class AppConfig {
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+//}
 }
