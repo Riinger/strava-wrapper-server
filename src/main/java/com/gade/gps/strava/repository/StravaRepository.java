@@ -11,4 +11,6 @@ public interface StravaRepository {
 
 	public ResponseEntity<List<SummaryActivity>> getLoggedInAthleteActivities(Integer before, Integer after, Integer page, Integer pageSize);
     public ResponseEntity<DetailedGear> getGearById(String gearId);
+    
+    public String simple();
 }

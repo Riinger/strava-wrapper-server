@@ -40,6 +40,12 @@ public class StravaRepositoryImpl implements StravaRepository {
     }
 
 	@Override
+	public String simple() {
+//        var apiInstance = new ActivitiesApi(helper.getApiClient());
+        var apiInstance = ActivitiesApi.getInstance();
+		return apiInstance.simpleMethod();
+	}
+	@Override
 	public ResponseEntity<List<SummaryActivity>> getLoggedInAthleteActivities(Integer before, Integer after, Integer page, Integer pageSize) {
         var apiInstance = new ActivitiesApi(helper.getApiClient());
 	        
