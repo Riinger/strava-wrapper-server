@@ -1,15 +1,9 @@
 package com.gade.gps.strava.repository;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.MDC;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -24,6 +18,7 @@ import com.gade.gps.strava.client.auth.OAuth;
 import com.gade.gps.strava.config.LoggingInterceptor;
 import com.gade.gps.strava.config.StravaAppProperties;
 import com.gade.gps.strava.oauth.OAuthHelper;
+import com.gade.gps.strava.utils.Converters;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -73,7 +68,7 @@ public class RepositoryHelper {
         protected void logRequest(HttpRequest request, byte[] body) {
     		log.info("===> Invoking downstream API : URI = '{}', Method = '{}', Headers = '{}'", 
     				request.getURI(), 
-    				request.getMethod(), headersToString(request.getHeaders()));
+    				request.getMethod(), Converters.headersToString(request.getHeaders()));
 
         }
 
@@ -81,29 +76,7 @@ public class RepositoryHelper {
     		log.info("<== Downstream API returned : HTTP Status Code = '{}', Status Text = '{}', Headers = '{}'", 
     				response.getStatusCode().value(),
     				response.getStatusText(),
-    				headersToString(response.getHeaders()));
-        }
-
-        protected String headersToString(HttpHeaders headers) {
-            if(headers == null || headers.isEmpty()) return "";
-    		return headers
-    				.keySet()
-    				.stream()
-    				.filter(k -> !k.equalsIgnoreCase("Authorization"))
-    				.map(k -> k + "=" + headers.get(k))
-    				  .collect(Collectors.joining(",", "{", "}"));
-        }
-
-        protected String bodyToString(InputStream body) throws IOException {
-            StringBuilder builder = new StringBuilder();
-            try (var bufferedReader = new BufferedReader(new InputStreamReader(body, StandardCharsets.UTF_8))) {
-				String line = bufferedReader.readLine();
-				while (line != null) {
-				    builder.append(line).append(System.lineSeparator());
-				    line = bufferedReader.readLine();
-				}
-			}
-            return builder.toString();
+    				Converters.headersToString(response.getHeaders()));
         }
     }
 

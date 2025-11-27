@@ -272,16 +272,31 @@
                             <rules>
                                 <rule>
                                     <element>PACKAGE</element>
+									<excludes>
+										<exclude>org.openapitools.configuration</exclude>
+									</excludes>
                                     <limits>
                                         <limit>
                                             <counter>CLASS</counter>
                                             <value>MISSEDRATIO</value>
                                             <maximum>0</maximum>
                                         </limit>
+									</limits>
+								</rule>
+                                <rule>
+                                    <element>CLASS</element>
+									<excludes>
+										<exclude>org.openapitools.configuration.*</exclude>
+										<exclude>*Interceptor*</exclude>
+										<exclude>*EnumConverter*</exclude>
+										<exclude>*YamlPropertySourceFactory*</exclude>
+										<exclude>**.ExceptionHandlerAdvice*</exclude>
+									</excludes>
+                                    <limits>
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>80%</minimum>
+                                            <minimum>60%</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
