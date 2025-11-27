@@ -1,5 +1,7 @@
 package com.gade.gps.strava.controller;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,13 +22,16 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
+import com.gade.gps.strava.client.model.SummaryActivity;
 import com.gade.gps.strava.service.AthleteService;
 import com.gade.gps.strava.utils.TestHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
-@SpringBootTest//(classes= {AthleteApiController.class, StravaWrapperApplication.class})
+@SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
 
@@ -38,6 +43,7 @@ class AthleteApiControllerTest {
 	
 	@Autowired AthleteApiController controller;
 	@Autowired MockMvc mockMvc;
+	@Autowired ObjectMapper objectMapper;
 	
 	@Test
 	void test() throws Exception {
@@ -48,6 +54,19 @@ class AthleteApiControllerTest {
 				
 		Mockito.when(service.getActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponse);
 
-		mockMvc.perform(get("/athlete/activities").accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+		var result = mockMvc.perform(get("/athlete/activities").accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+		assertEquals(200, result.getResponse().getStatus());
+		var summaryList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<SummaryActivity>>() {/* Intentionally empty */});
+		assertEquals(2, summaryList.size());
+		var index = 0;
+		for ( var summary : summaryList ) {
+			var index2 = index;
+			assertAll(
+					() -> assertEquals(mockedResponse.get(index2).getDistance(), summary.getDistance()),
+					() -> assertEquals(mockedResponse.get(index2).getId(), summary.getId()),
+					() -> assertEquals(mockedResponse.get(index2).getElapsedTime(), summary.getElapsedTime())
+					);
+			index++;
+		}
 	}
 }

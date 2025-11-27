@@ -61,6 +61,15 @@ public class TestHelper {
 		gsa.setId((long)randomInt(1001, 10000));
 		return gsa;
 	}
+	public static DetailedGear createDetailedGear(String id, String name, float distance) {
+		var g = new DetailedGear();
+		g.setBrandName("Brand X");
+		g.setDescription("My gear for testing");
+		g.setDistance(distance);
+		g.setId(id);
+		g.setName(name);
+		return g;
+	}
 	public static DetailedGear createRandomDetailedGear() {
 		var g = new DetailedGear();
 		g.setBrandName(null);
