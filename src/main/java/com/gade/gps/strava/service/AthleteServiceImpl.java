@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.client.model.SummaryActivity;
@@ -32,6 +33,8 @@ public class AthleteServiceImpl implements AthleteService {
     final StravaCache stravaCache;
     final SummaryMapper mapper;
     
+    private List<SummaryActivity> activities;
+    
     public AthleteServiceImpl(StravaRepository stravaRepository, StravaCache stravaCache, SummaryMapper mapper) {
     	this.stravaRepository = stravaRepository;
     	this.stravaCache = stravaCache;
@@ -39,7 +42,7 @@ public class AthleteServiceImpl implements AthleteService {
     }
 
     @Override
-	public List<GadeSummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) {
+	public List<GadeSummaryActivity> getActivities(Integer before, Integer after, Integer page, Integer pageSize) throws JsonProcessingException {
 		var response = stravaRepository.getLoggedInAthleteActivities(before, after, page, pageSize);
 		if ( response.getStatusCode() == HttpStatus.OK ) {
 			return mapper.mapToGadeList(response.getBody());
@@ -48,22 +51,12 @@ public class AthleteServiceImpl implements AthleteService {
 		throw new StravaApplicationRuntimeException("Cannot get activities from Strava : {}" + response.getStatusCode().value());
 	}
     @Override
-	public List<GadeSummaryActivity> getActivities(CacheAction cacheAction) {
+	public List<GadeSummaryActivity> getActivities(CacheAction cacheAction) throws JsonProcessingException {
 
-    	List<SummaryActivity> activities = this.stravaCache.getCachedActivities();
+    	activities = this.stravaCache.getCachedActivities();
 
     	if ( !cacheAction.equals(NONE) ) {
-	    	Integer after = 0;
-	    	if ( cacheAction.equals(UPDATE)) { 
-	        	var latestAct = StravaCache.getLatestActivity(activities);
-		    	if ( latestAct != null ) {
-		    		var startDate = latestAct.getStartDate().toLocalDateTime();
-		    		log.info("After {}", startDate);
-		    		after = Integer.valueOf((int)OffsetDateTime.of(startDate, ZoneOffset.UTC).toEpochSecond());
-		    	}
-	    	} else {
-	    		activities = new ArrayList<>();
-	    	}
+	    	Integer after = getAfterParameterForNextStravaCall(cacheAction);
     		
 	    	var allRead = false;
 	    	var page = 1;
@@ -95,4 +88,18 @@ public class AthleteServiceImpl implements AthleteService {
 		return mapper.mapToGadeList(activities);
 
 	}
+    private Integer getAfterParameterForNextStravaCall(CacheAction cacheAction) {
+    	Integer after = 0;
+    	if ( cacheAction.equals(UPDATE)) { 
+        	var latestAct = StravaCache.getLatestActivity(activities);
+	    	if ( latestAct != null ) {
+				var startDate = latestAct.getStartDate().toLocalDateTime();
+				log.info("After {}", startDate);
+				return Integer.valueOf((int)OffsetDateTime.of(startDate, ZoneOffset.UTC).toEpochSecond());
+	    	}
+    	} else {
+    		activities = new ArrayList<>();
+    	}
+    	return after;
+    }
 }

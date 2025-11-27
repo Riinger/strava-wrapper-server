@@ -20,13 +20,8 @@ public class StravaWrapperApplication {
         return new JsonNullableModule();
     }
 
-
-//@Configuration
-//public class AppConfig {
-
     @Bean
-    public RestTemplate restTemplate() {
+    RestTemplate restTemplate() {
         return new RestTemplate();
     }
-//}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.gade.gps.strava.client.model.DetailedGear;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.client.model.SummaryActivity;
 
@@ -59,6 +60,15 @@ public class TestHelper {
 		gsa.setElapsedTime(elapsedTime);
 		gsa.setId((long)randomInt(1001, 10000));
 		return gsa;
+	}
+	public static DetailedGear createRandomDetailedGear() {
+		var g = new DetailedGear();
+		g.setBrandName(null);
+		g.setDescription(null);
+		g.setDistance((float)randomInt(1000, 100000) / 1000);
+		g.setId("g" + randomInt(100000, 1000000));
+		g.setName("some gear");
+		return g;
 	}
 	private static OffsetDateTime randomDate() {
 		return OffsetDateTime.of(randomInt(2022, 2025), randomInt(1, 12), randomInt(1, 28), randomInt(0, 23), randomInt(0, 59), randomInt(0, 59), randomInt(0, 999), ZoneOffset.ofHours(0));

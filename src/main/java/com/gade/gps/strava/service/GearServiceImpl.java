@@ -3,6 +3,7 @@ package com.gade.gps.strava.service;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.DetailedGear;
 import com.gade.gps.strava.config.StravaCache;
@@ -23,7 +24,7 @@ public class GearServiceImpl implements GearService {
     }
 
     @Override
-    public DetailedGear getGearById(String gearId) {
+    public DetailedGear getGearById(String gearId) throws JsonProcessingException {
 		var response = stravaRepository.getGearById(gearId);
 		if ( response.getStatusCode() == HttpStatus.OK ) {
 			return response.getBody();

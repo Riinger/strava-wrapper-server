@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.SummaryActivity;
 import com.gade.gps.strava.service.AthleteService;
+import com.gade.gps.strava.utils.Archiver;
 import com.gade.gps.strava.utils.StravaHelper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,10 +43,13 @@ public class StravaCache implements Serializable {
 
 	private transient StravaAppProperties stravaProperties;
 	final ObjectMapper objectMapper;
+	private transient Archiver archiver;
 
-    StravaCache(StravaAppProperties stravaProperties, ObjectMapper objectMapper) {
+
+    StravaCache(StravaAppProperties stravaProperties, ObjectMapper objectMapper, Archiver archiver) {
         this.stravaProperties = stravaProperties;
         this.objectMapper = objectMapper;
+		this.archiver = archiver;
     }
 
 	@SuppressWarnings("unchecked")
@@ -66,6 +70,7 @@ public class StravaCache implements Serializable {
 	public void archiveCachedActivities(Integer pageSize) {
 		var activities = getCachedActivities();
 		log.debug("cachedActivities returns {}", activities == null ? "null" : "non-null");
+		log.debug("cached activity count {}", activities == null ? "n/a" : activities.size());
 		if ( activities == null || pageSize < 1 ) return;
 		log.info("Archiving {} cached activities", activities.size());
 		
@@ -79,7 +84,7 @@ public class StravaCache implements Serializable {
 		
 			try {
 				log.debug("sublist = {} -> {}", objectMapper.writeValueAsString(subList));
-				StravaHelper.archiveResponse(AthleteService.getActivitiesArchiveFilename(page, pageSize, null, null), objectMapper.writeValueAsString(subList), stravaProperties.getArchive().getDirectory());
+				archiver.archiveResponse(AthleteService.getActivitiesArchiveFilename(page, pageSize, null, null), objectMapper.writeValueAsString(subList));
 			} catch (JsonProcessingException e) {
 				log.error("Unable to convert response to string - {}", e.getMessage());
 				throw new StravaApplicationRuntimeException(e.getMessage());

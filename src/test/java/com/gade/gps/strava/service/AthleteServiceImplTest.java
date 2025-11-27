@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gade.gps.strava.config.StravaCache;
 import com.gade.gps.strava.config.StravaCache.CacheAction;
 import com.gade.gps.strava.repository.StravaRepository;
@@ -32,7 +33,7 @@ class AthleteServiceImplTest {
 	@MockitoBean RestTemplate mockedRestTemplate;
 
 	@Test
-	void test_getLoggedInAthleteActivities() {
+	void test_getLoggedInAthleteActivities() throws JsonProcessingException {
 		var mockedResponseEntity = ResponseEntity.ok(TestHelper.createRandomSummaryActivityList(2));
 		Mockito.when(stravaRepository.getLoggedInAthleteActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponseEntity);
 
@@ -40,7 +41,7 @@ class AthleteServiceImplTest {
 		assertEquals(2, response.size());
 	}
 	@Test
-	void test_cachedActivities() {
+	void test_cachedActivities() throws JsonProcessingException  {
 		var mockedCacheResponse = TestHelper.createRandomSummaryActivityList(1);
 		var mockedResponseEntity = ResponseEntity.ok(TestHelper.createRandomSummaryActivityList(3));
 		Mockito.when(stravaRepository.getLoggedInAthleteActivities(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(mockedResponseEntity);

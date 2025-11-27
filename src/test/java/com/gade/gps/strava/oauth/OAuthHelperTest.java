@@ -46,7 +46,7 @@ class OAuthHelperTest {
 
     @SuppressWarnings("resource")
 	@BeforeEach
-    public void beforeAll() {
+    void beforeAll() {
         MockitoAnnotations.openMocks(OAuthHelperTest.class);
     }
 

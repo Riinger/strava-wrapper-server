@@ -57,6 +57,6 @@ public class SummaryMapper {
 		return gsa;
 	}
 	public List<GadeSummaryActivity> mapToGadeList(List<SummaryActivity> saList) {
-		return saList.stream().map(sa -> mapToGade(sa)).toList();
+		return saList.stream().map(this::mapToGade).toList();
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gade.gps.strava.client.model.GadeSummaryActivity;
 import com.gade.gps.strava.config.StravaCache;
 import com.gade.gps.strava.service.AthleteService;
@@ -38,7 +39,7 @@ public class AthleteApiController {
         @Parameter(name = "after", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer after,
         @Parameter(name = "page", in = ParameterIn.QUERY) @Valid @RequestParam(required = false) @Nullable Integer page,
         @Parameter(name = "per_page", in = ParameterIn.QUERY) @Valid @RequestParam(value = "per_page", required = false, defaultValue = "30") Integer perPage
-    ) {
+    ) throws JsonProcessingException {
 	
 		return ResponseEntity.ok(service.getActivities(before, after, page, perPage));
     }
@@ -50,7 +51,7 @@ public class AthleteApiController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<GadeSummaryActivity>> getActivities(
     		@Parameter(name = "cache_action", in = ParameterIn.QUERY) @Valid @RequestParam(required = false, defaultValue = "none") String cacheAction
-	) {
+	) throws JsonProcessingException {
 			return ResponseEntity.ok(service.getActivities(StravaCache.CacheAction.fromValue(cacheAction))); // TODO - want request parameters to specify filters
     }
 }

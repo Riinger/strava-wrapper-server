@@ -54,7 +54,6 @@ public class OAuthHelper {
 			return token.getAccessToken();
 		}
 		log.debug("Access token will have expired in the next {} minutes, so refresh", stravaAuth.getExpiryBuffer());
-//		var restTemplate = new RestTemplate();
 		
 		var headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
