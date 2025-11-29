@@ -18,7 +18,6 @@ import com.gade.gps.strava.StravaApplicationRuntimeException;
 import com.gade.gps.strava.client.model.SummaryActivity;
 import com.gade.gps.strava.service.AthleteService;
 import com.gade.gps.strava.utils.Archiver;
-import com.gade.gps.strava.utils.StravaHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
