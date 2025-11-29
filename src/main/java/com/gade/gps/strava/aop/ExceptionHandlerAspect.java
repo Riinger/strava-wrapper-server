@@ -1,8 +1,10 @@
 package com.gade.gps.strava.aop;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -29,7 +31,9 @@ public class ExceptionHandlerAspect {
 		try {
 			return joinPoint.proceed();
 		} catch (HttpStatusCodeException ex) {
-			var exception = new StravaDownstreamRuntimeException(ex.getMessage(), ex.getStatusCode(), joinPoint.getSignature().getName());
+			var exception = new StravaDownstreamRuntimeException(ex.getMessage(), 
+					ex.getStatusCode(), 
+					Optional.ofNullable(joinPoint.getSignature()).map(Signature::getName).orElse(""));
 			
 			log.error("Strava call failed with HTTP Status '{}' and message '{}'", ex.getStatusCode().value(), ex.getMessage());
 			if ( ex.getResponseBodyAsString() != null ) log.debug("Strava failure response = '{}'", ex.getResponseBodyAsString());
